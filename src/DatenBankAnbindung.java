@@ -4,6 +4,8 @@ import java.sql.SQLException;
 
 public class DatenBankAnbindung {
 
+    private static DatenBankAnbindung instanz;
+
     private static final String URL="jdbc:mysql://localhost:3306/kinderarztpraxis";
     private static final String USER="root";
     private static final String PASSWORD="DatenForever2";
@@ -23,4 +25,14 @@ public class DatenBankAnbindung {
         }
         return con;
     }
+
+    public static DatenBankAnbindung getInstanz() {
+
+        if (instanz == null) {
+            instanz = new DatenBankAnbindung();
+        }
+
+        return instanz;
+    }
+
 }
