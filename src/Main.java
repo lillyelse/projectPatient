@@ -1,3 +1,5 @@
+import javax.swing.*;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -5,6 +7,13 @@ public class Main {
         //Singleton Pattern,weil nur eine Instanz existieren darf-konstruktor privat deswegen rot
         DatenBankAnbindung dbAnbindung = DatenBankAnbindung.getInstanz();
         dbAnbindung.coni(); // Verbindung zur Datenbank wird getestet
+
+        SwingUtilities.invokeLater(() -> {
+            Login login = new Login();
+            login.setVisible(true);
+        });
+
+
             }
         }
 
