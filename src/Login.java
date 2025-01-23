@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Login extends JFrame{
 
@@ -13,9 +15,9 @@ public class Login extends JFrame{
     public Login(){
         setTitle("Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setContentPane(contentPane);
-        pack();
 
+        contentPane = new JPanel(new BorderLayout());
+        setContentPane(contentPane);
         setSize(400, 200);
         setLocationRelativeTo(null);
 
@@ -37,10 +39,40 @@ public class Login extends JFrame{
 
         panel.add(OKButton);
         panel.add(abbrechenButton);
-        panel.add(messageLabel);
 
-        add(panel, BorderLayout.CENTER);
+        contentPane.add(panel, BorderLayout.CENTER);
+        contentPane.add(messageLabel, BorderLayout.SOUTH);
+
+        // Login-Button Aktion
+        OKButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = usernameField.getText();
+                String password = new String(passwordField.getPassword());
+
+                if (authenticate(username, password)) {
+                    dispose(); // Login-Fenster schließen
+
+                    // Instanz der PatientenDatenbank hier erstellen
+
+
+                    // HauptGUI
+
+
+                } else {
+                    messageLabel.setText("Ungültige Anmeldedaten!");
+                }
+            }
+        });
+        //wenn man Abbrechen klickt soll sich Login Fenster schließen
+
+        abbrechenButton.addActionListener(e -> dispose());
+        setVisible(true);
     }
 
+    private boolean authenticate(String username, String password) {
+        // Temporäre Authentifizierung, später durch DB-Check ersetzen
+        return "admin".equals(username) && "password123".equals(password);
+    }
 
 }
