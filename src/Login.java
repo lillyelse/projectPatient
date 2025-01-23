@@ -54,10 +54,10 @@ public class Login extends JFrame{
                     dispose(); // Login-Fenster schließen
 
                     // Instanz der PatientenDatenbank hier erstellen
-
+            Patientendatenbank patientenDatenbank = new Patientendatenbank();
 
                     // HauptGUI
-
+            new HauptGUI(patientenDatenbank);
 
                 } else {
                     messageLabel.setText("Ungültige Anmeldedaten!");

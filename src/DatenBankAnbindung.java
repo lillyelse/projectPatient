@@ -41,6 +41,17 @@ public class DatenBankAnbindung {
 
         return instanz;
     }
-
+    public void close() {
+        if (con!= null) {
+            try {
+                if (!con.isClosed()) {
+                    con.close();
+                    System.out.println("Datenbankverbindung geschlossen.");
+                }
+            } catch (SQLException e) {
+                System.err.println("Fehler beim Schließen der Verbindung: " + e.getMessage());
+            }
+        }
+    }
 
 }
