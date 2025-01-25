@@ -60,8 +60,67 @@ public class AddPatientFromMenu {
             panel.add(angehoerigerField);
 
 
+        // Bestätigungs-Dialog
+        int result = JOptionPane.showConfirmDialog(null, panel, "Neuen Patienten hinzufügen", JOptionPane.OK_CANCEL_OPTION);
 
+        if (result == JOptionPane.OK_OPTION) {
+            // Eingabefelder überprüfen
+            if (vornameField.getText().trim().isEmpty() || nachnameField.getText().trim().isEmpty() ||
+                    geburtsdatumField.getText().trim().isEmpty() || strasseField.getText().trim().isEmpty() ||
+                    plzField.getText().trim().isEmpty() || ortField.getText().trim().isEmpty() ||
+                    bundeslandField.getText().trim().isEmpty() || geschlechtField.getText().trim().isEmpty() ||
+                    krankenkasseField.getText().trim().isEmpty() || angehoerigerField.getText().trim().isEmpty()) {
+
+                JOptionPane.showMessageDialog(null, "Bitte füllen Sie alle Felder aus.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                return; // Abbruch der Methode, wenn ein Feld leer ist
+            }
+
+            try {
+                // Geburtsdatum validieren und umwandeln (Date-Objekt)
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                java.util.Date utilDate = formatter.parse(geburtsdatumField.getText().trim()); // java.util.Date
+                java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime()); // Konvertierung zu java.sql.Date
+
+                // Geschlecht und Angehörige prüfen
+                int geschlecht = Integer.parseInt(geschlechtField.getText().trim());
+                int angehoerige = Integer.parseInt(angehoerigerField.getText().trim());
+
+                // Neues Patientenobjekt erstellen
+                Patient patient = new Patient(
+                        -1, // PatientenID wird später von der DB vergeben
+                        vornameField.getText().trim(),
+                        nachnameField.getText().trim(),
+                        sqlDate, // Geburtsdatum als java.sql.Date
+                        strasseField.getText().trim(),
+                        plzField.getText().trim(),
+                        ortField.getText().trim(),
+                        bundeslandField.getText().trim(),
+                        geschlecht,
+                        krankenkasseField.getText().trim(),
+                        angehoerige
+                );
+
+                // Patient zur Datenbank hinzufügen
+                boolean success = patientenDatenbank.addPatient(patient);
+
+                // Erfolgsmeldung anzeigen
+                if (success) {
+                    JOptionPane.showMessageDialog(null, "Patient erfolgreich hinzugefügt!");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Fehler beim Hinzufügen des Patienten.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                }
+
+            } catch (ParseException e) {
+                JOptionPane.showMessageDialog(null, "Ungültiges Geburtsdatum! Bitte im Format yyyy-MM-dd eingeben.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Ungültige Eingabe bei Geschlecht oder Angehörigen. Bitte Zahlen eingeben.", "Fehler", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Ein unerwarteter Fehler ist aufgetreten: " + e.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
+            }
         }
+
+
+    }
 }
 
 
