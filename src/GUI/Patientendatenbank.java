@@ -21,7 +21,8 @@ import java.util.List;
         public Patient getPatientById(int id) {
 
             String query = "SELECT * FROM patient WHERE PatientID = ?";
-            try (PreparedStatement pstmt = db.coni().prepareStatement(query)) {
+            try (Connection connection = db.coni();
+                 PreparedStatement pstmt = connection.prepareStatement(query))  {
                 pstmt.setInt(1, id);
                 ResultSet rs = pstmt.executeQuery();
                 if (rs.next()) {
@@ -29,7 +30,7 @@ import java.util.List;
                             rs.getInt("PatientID"),
                             rs.getString("Vorname"),
                             rs.getString("Nachname"),
-                            rs.getString("Geburtsdatum"),
+                            rs.getDate("Geburtsdatum"),
                             rs.getString("Strasse"),
                             rs.getString("PLZ"),
                             rs.getString("Ort"),
@@ -38,50 +39,41 @@ import java.util.List;
                             rs.getString("Krankenkasse"),
                             rs.getInt("AngehoerigerID")
                     );
+                }else {
+                    System.out.println("Kein Person.Patient mit der ID " + id + " gefunden.");
                 }
-
             } catch (SQLException e) {
                 e.printStackTrace();
             }
             return null;
         }
 
-        public List<Patient> getAllPatients() throws SQLException{
-            List<Patient> patient = new ArrayList<>();
-            // Angepasste Abfrage mit JOINs für geschlecht, krankenkasse, und bundesland
-            String query = "SELECT p.PatientID, p.Vorname, p.Nachname, p.Geburtsdatum, p.Strasse, p.PLZ, p.Ort, "
-                    + "b.Bezeichnung AS Bundesland, g.Bezeichnung AS Geschlecht, k.Bezeichnung AS Krankenkasse, "
-                    + "a.Bezeichnung AS Angehoeriger "
-                    + "FROM patient p "
-                    + "LEFT JOIN bundesland b ON p.Bundesland = b.BundeslandID "
-                    + "LEFT JOIN geschlecht g ON p.GeschlechtID = g.GeschlechtID "
-                    + "LEFT JOIN krankenkasse k ON p.Krankenkasse = k.KrankenkasseID "
-                    + "LEFT JOIN angehoeriger a ON p.AngehoerigerID = a.AngehoerigerID";
-
-            try (Connection connection = db.coni(); // Verbindung abrufen
-                 Statement statement = connection.createStatement(); // Statement erstellen
-                 ResultSet rs = statement.executeQuery(query)) { // Query ausführen
+        public List<Patient> getAllPatients() {
+            List<Patient> patients = new ArrayList<>();
+            String query = "SELECT * FROM patient";
+            try (Connection connection = db.coni();
+                 Statement statement = connection.createStatement();
+                 ResultSet rs = statement.executeQuery(query)) {
 
                 while (rs.next()) {
-                    patient.add(new Patient(
-                            rs.getInt("PatientID"), // ID des Patienten
+                    patients.add(new Patient(
+                            rs.getInt("PatientID"),
                             rs.getString("Vorname"),
                             rs.getString("Nachname"),
-                            rs.getString("Geburtsdatum"),
+                            rs.getDate("Geburtsdatum"),
                             rs.getString("Strasse"),
                             rs.getString("PLZ"),
                             rs.getString("Ort"),
-                            rs.getString("Bundesland"), // Bundesland aus der Tabelle
-                            rs.getInt("Geschlecht"), // Geschlecht aus der Tabelle
-                            rs.getString("Krankenkasse"), // Krankenkasse aus der Tabelle
-                            rs.getInt("Angehoeriger") // Angehöriger aus der Tabelle
+                            rs.getString("Bundesland"),
+                            rs.getInt("GeschlechtID"),
+                            rs.getString("Krankenkasse"),
+                            rs.getInt("AngehoerigerID")
                     ));
                 }
-
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            return patient;
+            return patients;
         }
 
 
@@ -91,7 +83,7 @@ import java.util.List;
             try (PreparedStatement pstmt = db.coni().prepareStatement(query)) {
                 pstmt.setString(1, patient.getVorname());
                 pstmt.setString(2, patient.getNachname());
-                pstmt.setString(3, patient.getGeburtsdatum());
+                pstmt.setDate(3, patient.getGeburtsdatum());
                 pstmt.setString(4, patient.getStrasse());
                 pstmt.setString(5, patient.getPlz());
                 pstmt.setString(6, patient.getOrt());
