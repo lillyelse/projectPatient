@@ -1,3 +1,5 @@
+package models;
+
 public class Patient {
 
     private int patientid;
@@ -101,7 +103,7 @@ public class Patient {
 
     @Override
     public String toString() {
-        return "GUI.GUI.Patient{" +
+        return "GUI.GUI.models.Patient{" +
                 "patientid=" + patientid +
                 ", vorname='" + vorname + '\'' +
                 ", nachname='" + nachname + '\'' +
