@@ -107,7 +107,6 @@ import java.util.List;
 
         }
 
-
         public boolean deletePatient(int patientId) throws SQLException {
 
             String updateBefundQuery = "UPDATE befund SET PatientID = NULL WHERE PatientID = ?";
@@ -137,7 +136,10 @@ import java.util.List;
             }
 
         }
+        public boolean updatePatient(Patient patient) {
+            String query = "UPDATE patient SET Vorname = ?, Nachname = ?, Geburtsdatum = ?, Strasse = ?, PLZ = ?, Ort = ?, Bundesland = ?, GeschlechtID = ?, Krankenkasse = ?, AngehoerigeID = ? WHERE PatientID = ?";
 
+        }
         public void close() {
             db.close();
         }
