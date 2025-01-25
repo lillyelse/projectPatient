@@ -1,6 +1,7 @@
 package GUI;
 
 import database.DatenBankAnbindung;
+import models.Patient;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.List;
 
 //für Queries:
 
-    class Patientendatenbank {
+    public class Patientendatenbank {
 
         private DatenBankAnbindung db;
 
