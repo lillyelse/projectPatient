@@ -2,13 +2,14 @@ package GUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 
 public class KontaktFormular extends JPanel {
 
     private JPanel kontaktFormularPanel;
     private JTextField vornameField, nachnameField, geburtsdatumField, strasseField, plzField, ortField,
             bundeslandField, geschlechtField, krankenkasseField, angehoerigerField;
-
+    private PatientManager patientManager;
 
     public KontaktFormular() {
         this.kontaktFormularPanel = new JPanel(new BorderLayout());
@@ -65,6 +66,8 @@ public class KontaktFormular extends JPanel {
         JButton hinzufuegenButton = new JButton("Hinzufügen");
         JButton bearbeitenButton = new JButton("Bearbeiten");
         JButton loeschenButton = new JButton("Löschen");
+
+
 
     }
 }
