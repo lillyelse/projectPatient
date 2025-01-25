@@ -12,7 +12,7 @@ public class Patient {
     private String plz;
     private String ort;
     private String bundesland;
-    private int geschlechtID; // 1 = männlich, 2 = weiblich, 3 = divers
+    private int geschlechtID;
     private String krankenkasse;
     private int angehoerigerID;
 
