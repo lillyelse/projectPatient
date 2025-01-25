@@ -1,7 +1,14 @@
 package GUI;
 
+
+import GUI.Patient.AddPatientFromMenu;
+import GUI.Patient.DeletePatientFromMenu;
+import GUI.Patient.EditPatientFromMenu;
+import GUI.Patient.SearchPatientFromMenu;
+import models.Patient; // Ersetzen Sie `my.package.name` durch das tatsächliche Package der Person.Patient-Klasse
 import database.DatenBankAnbindung;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -10,10 +17,10 @@ import java.util.List;
 
 public class HauptGUI extends JFrame {
 
-    private SearchPatientFromMenu searchPatientFromMenu;            //geplant
-    private AddPatientFromMenu addPatientFromMenu;                 //geplant
+    private SearchPatientFromMenu searchPatientFromMenu;
+    private AddPatientFromMenu addPatientFromMenu;
     private Patientendatenbank patientenDatenbank;
-    private KontaktFormular kontaktFormular;                        //geplant
+    private KontaktFormular kontaktFormular;
     private JTable table;
 
     public HauptGUI(Patientendatenbank patientenDatenbank) {
@@ -101,70 +108,52 @@ public class HauptGUI extends JFrame {
 
 
 
+//Methoden
+
+
+    private JScrollPane createTablePanel() {
+        table = new JTable();
+        refreshPatientTable();
+        return new JScrollPane(table);
+    }
 
 
 
-
-
-
-
-
-        private void searchPatient() {
-            String patientIdStr = JOptionPane.showInputDialog(this, "Geben Sie die PatientID ein:");
-
-            if (patientIdStr != null && !patientIdStr.isEmpty()) {
-                try {
-                    int patientId = Integer.parseInt(patientIdStr);
-                    Patient patient = patientenDatenbank.getPatientById(patientId);
-
-                    if (patient != null) {
-                        // Falls der GUI.GUI.models.Patient gefunden wurde, Tabelle mit diesem Patienten aktualisieren
-                        updatePatientTable(java.util.List.of(patient));
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Kein GUI.GUI.models.Patient mit dieser ID gefunden!");
-                    }
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(this, "Ungültige ID eingegeben. Bitte geben Sie eine gültige Zahl ein.");
-                }
-            }
-        }
-
-
-
-        private void refreshPatientTable() {
-            try {
-                java.util.List<Patient> patients = patientenDatenbank.getAllPatients(); // Alle Patienten anzeigen
-                updatePatientTable(patients);
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Fehler beim Laden der Patienten: " + e.getMessage());
-            }
-        }
-
-        private void updatePatientTable(List<Patient> patients) {
-            String[] columnNames = {"PatientID", "Vorname", "Nachname", "Geburtsdatum", "Strasse", "PLZ", "Ort", "Bundesland", "Geschlecht", "Krankenkasse", "Angehoerige"};
-            Object[][] data = patients.stream()
-                    .map(patient -> new Object[]{
-                            patient.getpatientid(),
-                            patient.getVorname(),
-                            patient.getNachname(),
-                            patient.getGeburtsdatum(),
-                            patient.getStrasse(),
-                            patient.getPlz(),
-                            patient.getOrt(),
-                            patient.getBundesland(),
-                            patient.getGeschlechtID(),
-                            patient.getKrankenkasse(),
-                            patient.getAngehoerigeID()
-                    }).toArray(Object[][]::new);
-
-            table = new JTable(data, columnNames);
-            JScrollPane scrollPane = new JScrollPane(table);
-
-            getContentPane().removeAll(); // Inhalt des Fensters löschen
-            add(scrollPane, BorderLayout.CENTER);
-            revalidate();
-            repaint();
+    public void refreshPatientTable() {
+        try {
+            java.util.List<Patient> patients = patientenDatenbank.getAllPatients();
+            updatePatientTable((List) patients);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Fehler beim Abrufen der Patienten: " + e.getMessage());
         }
     }
+
+    private void updatePatientTable(List<Patient> patients) {
+        // Spaltennamen für die Tabelle
+        String[] columnNames = {"PatientID", "Vorname", "Nachname", "Geburtsdatum", "Straße", "PLZ", "Ort", "Bundesland", "GeschlechtID", "Krankenkasse", "AngehoerigeID"};
+
+        // Umwandlung der Patientenliste in ein 2D-Array für die Tabelle
+        Object[][] data = patients.stream()
+                .map(patient -> new Object[]{
+                        patient.getPatientid(),       // Zugriff auf Instanzmethoden
+                        patient.getVorname(),
+                        patient.getNachname(),
+                        patient.getGeburtsdatum(),
+                        patient.getStrasse(),
+                        patient.getPlz(),
+                        patient.getOrt(),
+                        patient.getBundesland(),
+                        patient.getGeschlechtID(),
+                        patient.getKrankenkasse(),
+                        patient.getAngehoerigerID()
+                })
+                .toArray(Object[][]::new); // Umwandlung des Streams in ein 2D-Array
+
+        // Setze das Modell der JTable mit den Daten und Spaltennamen
+        table.setModel(new DefaultTableModel(data, columnNames));
+    }
+
+
+
 
 
