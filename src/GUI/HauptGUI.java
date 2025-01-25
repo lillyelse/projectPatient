@@ -104,7 +104,7 @@ public class HauptGUI extends JFrame {
         refreshPatientTable();
         setVisible(true);
     }
-        }
+
 
 
 
@@ -151,6 +151,7 @@ public class HauptGUI extends JFrame {
         // Setze das Modell der JTable mit den Daten und Spaltennamen
         table.setModel(new DefaultTableModel(data, columnNames));
     }
+}
 
 
 
