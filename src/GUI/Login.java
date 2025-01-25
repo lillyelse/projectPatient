@@ -1,7 +1,5 @@
 package GUI;
 
-import GUI.HauptGUI;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -20,13 +18,14 @@ public class Login extends JFrame{
         setTitle("Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        contentPane = new JPanel(new BorderLayout());
-        setContentPane(contentPane);
+
         setSize(400, 200);
         setLocationRelativeTo(null);
 
-        // Layout für das Fenster
-        JPanel panel = new JPanel(new GridLayout(4, 2, 10, 10));
+
+        // Panel für Login-Formular
+        JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10));
+        panel.setOpaque(false);
 
         // Komponenten hinzufügen
         panel.add(new JLabel("Benutzername:"));
@@ -44,6 +43,8 @@ public class Login extends JFrame{
         panel.add(OKButton);
         panel.add(abbrechenButton);
 
+        messageLabel = new JLabel("", SwingConstants.CENTER);
+
         contentPane.add(panel, BorderLayout.CENTER);
         contentPane.add(messageLabel, BorderLayout.SOUTH);
 
@@ -56,13 +57,8 @@ public class Login extends JFrame{
 
                 if (authenticate(username, password)) {
                     dispose(); // Login-Fenster schließen
-
-                    // Instanz der PatientenDatenbank hier erstellen
-            Patientendatenbank patientenDatenbank = new Patientendatenbank();
-
-                    // GUI.HauptGUI
-            new HauptGUI(patientenDatenbank);
-
+                    Patientendatenbank patientenDatenbank = new Patientendatenbank();
+                    new HauptGUI(patientenDatenbank);
                 } else {
                     messageLabel.setText("Ungültige Anmeldedaten!");
                 }
@@ -71,6 +67,7 @@ public class Login extends JFrame{
         //wenn man Abbrechen klickt soll sich Login Fenster schließen
 
         abbrechenButton.addActionListener(e -> dispose());
+
         setVisible(true);
     }
 

@@ -5,7 +5,7 @@ import GUI.Patient.AddPatientFromMenu;
 import GUI.Patient.DeletePatientFromMenu;
 import GUI.Patient.EditPatientFromMenu;
 import GUI.Patient.SearchPatientFromMenu;
-import models.Patient; // Ersetzen Sie `my.package.name` durch das tatsächliche Package der Person.Patient-Klasse
+import models.Patient; 
 import database.DatenBankAnbindung;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -109,7 +109,6 @@ public class HauptGUI extends JFrame {
 
 
 //Methoden
-
 
     private JScrollPane createTablePanel() {
         table = new JTable();
