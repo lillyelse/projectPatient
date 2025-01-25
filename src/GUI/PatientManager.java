@@ -15,6 +15,8 @@ public class PatientManager {
         this.patientenDatenbank = patientenDatenbank;
         this.hauptGUI = hauptGUI;
     }
+
+    //doch nicht benutzt?
     public void addPatient() throws SQLException {
         // Schritt 1: Erstelle das Patient-Objekt aus den Eingabefeldern
         Patient patient = kontaktFormular.createPatientFromFields();  // Diese Methode erstellt das Patient-Objekt basierend auf den Feldern

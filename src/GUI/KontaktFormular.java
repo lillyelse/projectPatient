@@ -76,12 +76,33 @@ public class KontaktFormular extends JPanel {
         // ActionListener für Buttons hinzufügen!!!
         hinzufuegenButton.addActionListener(e -> {
             try {
-                patientManager.addPatient();  // Versuch, einen neuen Patienten hinzuzufügen
-            } catch (SQLException ex) {
-                // Fehlerbehandlung: Zeige eine benutzerfreundliche Fehlermeldung
-                JOptionPane.showMessageDialog(null, "Fehler beim Hinzufügen des Patienten. Bitte versuchen Sie es erneut.",
-                        "Datenbankfehler", JOptionPane.ERROR_MESSAGE);
-                ex.printStackTrace();  // Zeigt den Stack Trace für Entwickler zur Fehlersuche (optional)
+                // Schritt 1: Patient aus den Eingabefeldern erstellen
+                Patient patient = createPatientFromFields();
+
+                if (patient == null) {
+                    JOptionPane.showMessageDialog(null, "Fehler bei der Eingabe der Patientendaten. Bitte überprüfen Sie die Felder.",
+                            "Eingabefehler", JOptionPane.ERROR_MESSAGE);
+                    return;  // Rückgabe, falls die Patientenerstellung fehlgeschlagen ist
+                }
+
+                // Schritt 2: Versuchen, den Patienten zur Datenbank hinzuzufügen
+                boolean success = (boolean) patientenDatenbank.addPatient(patient);
+
+                if (success) {
+                    // Erfolgsmeldung, wenn der Patient erfolgreich hinzugefügt wurde
+                    JOptionPane.showMessageDialog(null, "Patient erfolgreich hinzugefügt!");
+                    hauptGUI.refreshPatientTable(); // Patiententabelle aktualisieren
+                    clearFields(); // Eingabefelder leeren
+                } else {
+                    // Fehlerfall: Zeige eine Fehlermeldung, wenn das Hinzufügen nicht erfolgreich war
+                    JOptionPane.showMessageDialog(null, "Fehler beim Hinzufügen des Patienten. Bitte versuchen Sie es erneut.",
+                            "Fehler", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception ex) {
+                // Allgemeine Fehlerbehandlung, falls andere unerwartete Fehler auftreten
+                JOptionPane.showMessageDialog(null, "Unerwarteter Fehler: " + ex.getMessage(),
+                        "Fehler", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
             }
         });
 
@@ -150,5 +171,18 @@ public class KontaktFormular extends JPanel {
             JOptionPane.showMessageDialog(null, "Fehler bei der Eingabe: " + ex.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
             return null;
         }
+    }
+    //funktioniert noch nicht, soll mein Kontaktformular leeren, nachdem ich es ausgefüllt hab
+    public void clearFields() {
+        vornameField.setText("");
+        nachnameField.setText("");
+        geburtsdatumField.setText("");
+        strasseField.setText("");
+        plzField.setText("");
+        ortField.setText("");
+        bundeslandField.setText("");
+        geschlechtField.setText("");
+        krankenkasseField.setText("");
+        angehoerigerField.setText("");
     }
 }
