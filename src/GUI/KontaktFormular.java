@@ -1,5 +1,7 @@
 package GUI;
 
+import models.Patient;
+
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
@@ -10,6 +12,9 @@ public class KontaktFormular extends JPanel {
     private JTextField vornameField, nachnameField, geburtsdatumField, strasseField, plzField, ortField,
             bundeslandField, geschlechtField, krankenkasseField, angehoerigerField;
     private PatientManager patientManager;
+    private Patientendatenbank patientenDatenbank;
+    private HauptGUI hauptGUI;
+
 
     public KontaktFormular() {
         this.kontaktFormularPanel = new JPanel(new BorderLayout());
@@ -67,7 +72,60 @@ public class KontaktFormular extends JPanel {
         JButton bearbeitenButton = new JButton("Bearbeiten");
         JButton loeschenButton = new JButton("Löschen");
 
+        // ActionListener für Buttons hinzufügen!!!
+        hinzufuegenButton.addActionListener(e -> {
+            try {
+                patientManager.addPatient();  // Versuch, einen neuen Patienten hinzuzufügen
+            } catch (SQLException ex) {
+                // Fehlerbehandlung: Zeige eine benutzerfreundliche Fehlermeldung
+                JOptionPane.showMessageDialog(null, "Fehler beim Hinzufügen des Patienten. Bitte versuchen Sie es erneut.",
+                        "Datenbankfehler", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();  // Zeigt den Stack Trace für Entwickler zur Fehlersuche (optional)
+            }
+        });
 
+        bearbeitenButton.addActionListener(e -> new PatientEditDialog());
+        loeschenButton.addActionListener(e -> deletePatient());
+
+        // Füge die Buttons zum Button Panel hinzu
+        buttonPanel.add(hinzufuegenButton);
+        buttonPanel.add(bearbeitenButton);
+        buttonPanel.add(loeschenButton);
+
+        // Drei Buttons zum Panel vom Kontaktformular Panel hinzugefügt
+        kontaktFormularPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        // Setze das Kontaktformular Panel als das Hauptpanel des Kontaktformulars
+        this.setLayout(new BorderLayout());
+        this.add(kontaktFormularPanel, BorderLayout.CENTER);
 
     }
+
+    private void deletePatient() {
+        String patientIdStr = JOptionPane.showInputDialog(this, "Geben Sie die PatientID ein, die Sie löschen möchten:");
+        if (patientIdStr != null && !patientIdStr.isEmpty()) {
+            try {
+                int patientId = Integer.parseInt(patientIdStr);
+                Patient patient = patientenDatenbank.getPatientById(patientId);
+                if (patient != null) {
+                    int confirmation = JOptionPane.showConfirmDialog(this,
+                            "Möchten Sie den Patienten mit der ID " + patientId + " wirklich löschen?",
+                            "Bestätigung", JOptionPane.YES_NO_OPTION);
+                    if (confirmation == JOptionPane.YES_OPTION) {
+                        if (patientenDatenbank.deletePatient(patientId)) {
+                            JOptionPane.showMessageDialog(this, "Patient erfolgreich gelöscht!");
+                            hauptGUI.refreshPatientTable();
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Fehler beim Löschen des Patienten!");
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Kein Patient mit dieser ID gefunden!");
+                }
+            } catch (NumberFormatException | SQLException e) {
+                JOptionPane.showMessageDialog(this, "Ungültige ID eingegeben. Bitte geben Sie eine gültige Zahl ein.");
+            }
+        }
+    }
+
 }
