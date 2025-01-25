@@ -1,3 +1,7 @@
+package GUI;
+
+import database.DatenBankAnbindung;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

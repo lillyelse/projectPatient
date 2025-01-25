@@ -1,6 +1,7 @@
+package GUI;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.util.List;
 
 
@@ -56,10 +57,10 @@ public class HauptGUI extends JFrame {
                     Patient patient = patientenDatenbank.getPatientById(patientId);
 
                     if (patient != null) {
-                        // Falls der Patient gefunden wurde, Tabelle mit diesem Patienten aktualisieren
+                        // Falls der GUI.Patient gefunden wurde, Tabelle mit diesem Patienten aktualisieren
                         updatePatientTable(java.util.List.of(patient));
                     } else {
-                        JOptionPane.showMessageDialog(this, "Kein Patient mit dieser ID gefunden!");
+                        JOptionPane.showMessageDialog(this, "Kein GUI.Patient mit dieser ID gefunden!");
                     }
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(this, "Ungültige ID eingegeben. Bitte geben Sie eine gültige Zahl ein.");
@@ -105,4 +106,4 @@ public class HauptGUI extends JFrame {
         }
     }
 
-}
+
