@@ -17,28 +17,20 @@ public class PatientManager {
     }
 
     //doch nicht benutzt?
-    public void addPatient() throws SQLException {
-        // Schritt 1: Erstelle das Patient-Objekt aus den Eingabefeldern
-        Patient patient = kontaktFormular.createPatientFromFields();  // Diese Methode erstellt das Patient-Objekt basierend auf den Feldern
-
+    public boolean addPatient(Patient patient) throws SQLException {
         // Überprüfen, ob das Patient-Objekt null ist, bevor mit der Datenbankoperation fortgefahren wird
         if (patient == null) {
-            JOptionPane.showMessageDialog(null, "Patient konnte nicht erstellt werden. Bitte überprüfen Sie die Eingaben.");
-            return;
+            throw new IllegalStateException("Patient konnte nicht erstellt werden. Bitte überprüfen Sie die Eingaben.");
         }
 
-        // Schritt 2: Versuche, den Patienten zur Datenbank hinzuzufügen
-        boolean success = (boolean) patientenDatenbank.addPatient(patient);
+        // Hier wird der Patient zur Datenbank hinzugefügt, Beispiel für den Datenbankzugriff:
+        // Wir gehen davon aus, dass patientenDatenbank.addPatient(patient) eine SQLException werfen kann.
+        boolean success = patientenDatenbank.addPatient(patient); // true oder false je nach Erfolg
 
-        // Schritt 3: Zeige eine Erfolgsmeldung, falls der Patient erfolgreich hinzugefügt wurde
-        if (success) {
-            JOptionPane.showMessageDialog(null, "Patient erfolgreich hinzugefügt!");
-            hauptGUI.refreshPatientTable();  // Aktualisiere die Patiententabelle
-        } else {
-            // Fehlerfall: Zeige eine Fehlermeldung, wenn das Hinzufügen des Patienten nicht erfolgreich war
-            JOptionPane.showMessageDialog(null, "Fehler beim Hinzufügen des Patienten. Bitte versuchen Sie es erneut.", "Fehler", JOptionPane.ERROR_MESSAGE);
-        }
+        // Rückgabe des Erfolgsstatus
+        return success;
+    }
     }
 
 
-}
+
