@@ -1,3 +1,7 @@
+package GUI;
+
+import GUI.HauptGUI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -56,7 +60,7 @@ public class Login extends JFrame{
                     // Instanz der PatientenDatenbank hier erstellen
             Patientendatenbank patientenDatenbank = new Patientendatenbank();
 
-                    // HauptGUI
+                    // GUI.HauptGUI
             new HauptGUI(patientenDatenbank);
 
                 } else {
