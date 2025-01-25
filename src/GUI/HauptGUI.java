@@ -1,50 +1,111 @@
 package GUI;
 
+import database.DatenBankAnbindung;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 
 public class HauptGUI extends JFrame {
 
-        private Patientendatenbank patientenDatenbank;
-        private JTable table;
+    private SearchPatientFromMenu searchPatientFromMenu;            //geplant
+    private AddPatientFromMenu addPatientFromMenu;                 //geplant
+    private Patientendatenbank patientenDatenbank;
+    private KontaktFormular kontaktFormular;                        //geplant
+    private JTable table;
 
-        public HauptGUI(Patientendatenbank patientenDatenbank) {
-            this.patientenDatenbank = patientenDatenbank;
-
-            setTitle("Patientenverwaltung");
-            setSize(600, 400);
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            setLocationRelativeTo(null);
-
-            // Menüleiste erstellen
-            JMenuBar menuBar = new JMenuBar();
-            JMenu menu = new JMenu("Patient");
-            JMenuItem searchItem = new JMenuItem("Suchen");
-            menu.add(searchItem);
-            menuBar.add(menu);
-            setJMenuBar(menuBar);
-
-            // Aktionen für Menü
-            searchItem.addActionListener(e -> searchPatient());
-
-            // Zentralen Bereich (Hauptinhalt) hinzufügen
-            JPanel centerPanel = new JPanel();
-            centerPanel.add(new JLabel("Hauptbereich für die Patientenverwaltung"));
-            add(centerPanel, BorderLayout.CENTER);
+    public HauptGUI(Patientendatenbank patientenDatenbank) {
+        this.patientenDatenbank = patientenDatenbank;
 
 
+        // Erstelle das Haupt-Panel und setze das Layout
+        JPanel mainPanel = new JPanel(new BorderLayout());
 
-            // Tabelle mit Patienten anzeigen
-            refreshPatientTable();
+        // Initialisiere das JTabbedPane
+        JTabbedPane tabbedPane = new JTabbedPane();
 
-            setVisible(true);
+        // Erstelle eine Instanz der KontaktFormular-Klasse
+        KontaktFormular kontaktFormularPanel = new KontaktFormular();
+
+        // Füge die Tabs hinzu
+        tabbedPane.addTab("Patiententabelle", createTablePanel()); // Hier kannst du die Tabelle einfügen
+        tabbedPane.addTab("Kontaktformular", kontaktFormularPanel); // Das Kontaktformular wird hier eingefügt
+
+        // Füge das JTabbedPane zum mainPanel hinzu
+        mainPanel.add(tabbedPane, BorderLayout.CENTER);
+
+        // Setze das ContentPane auf das mainPanel
+        setContentPane(mainPanel);
+
+        setTitle("Patientenverwaltung");
+        setSize(800, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
 
 
 
+        JMenuBar menuBar = new JMenuBar();
+        JMenu patientMenu = new JMenu("Patient");
 
+        JMenuItem searchItem = new JMenuItem("Suchen");
+        JMenuItem addItem = new JMenuItem("Hinzufügen");
+        JMenuItem editItem = new JMenuItem("Bearbeiten");
+        JMenuItem deleteItem = new JMenuItem("Löschen");
+
+        patientMenu.add(searchItem);
+        patientMenu.add(addItem);
+        patientMenu.add(editItem);
+        patientMenu.add(deleteItem);
+
+        menuBar.add(patientMenu);
+        setJMenuBar(menuBar);
+
+        searchItem.addActionListener(e -> searchPatientFromMenu.searchPatient());
+        addItem.addActionListener(e -> addPatientFromMenu.addPatient());
+        //unteren beiden funktionieren noch nicht-noch nicht bearbeitet
+        editItem.addActionListener(e -> new EditPatientFromMenu(patientenDatenbank).execute(this));
+        deleteItem.addActionListener(e -> new DeletePatientFromMenu(patientenDatenbank).execute(this));
+
+
+        // ActionListener für Hauptmenü (Patient)
+        patientMenu.addMenuListener(new javax.swing.event.MenuListener() {
+            @Override
+            public void menuSelected(javax.swing.event.MenuEvent e) {
+                // Tabelle mit allen Patienten aktualisieren
+                refreshPatientTable();
+            }
+
+            @Override
+            public void menuDeselected(javax.swing.event.MenuEvent e) {
+                // Keine Aktion erforderlich
+            }
+
+            @Override
+            public void menuCanceled(javax.swing.event.MenuEvent e) {
+                // Keine Aktion erforderlich
+            }
+        });
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                DatenBankAnbindung.close();
+            }
+        });
+
+        refreshPatientTable();
+        setVisible(true);
+    }
         }
+
+
+
+
+
+
+
+
 
 
 
@@ -57,10 +118,10 @@ public class HauptGUI extends JFrame {
                     Patient patient = patientenDatenbank.getPatientById(patientId);
 
                     if (patient != null) {
-                        // Falls der GUI.Patient gefunden wurde, Tabelle mit diesem Patienten aktualisieren
+                        // Falls der GUI.GUI.models.Patient gefunden wurde, Tabelle mit diesem Patienten aktualisieren
                         updatePatientTable(java.util.List.of(patient));
                     } else {
-                        JOptionPane.showMessageDialog(this, "Kein GUI.Patient mit dieser ID gefunden!");
+                        JOptionPane.showMessageDialog(this, "Kein GUI.GUI.models.Patient mit dieser ID gefunden!");
                     }
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(this, "Ungültige ID eingegeben. Bitte geben Sie eine gültige Zahl ein.");
