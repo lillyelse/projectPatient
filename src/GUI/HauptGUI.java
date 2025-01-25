@@ -76,7 +76,7 @@ public class HauptGUI extends JFrame {
         deleteItem.addActionListener(e -> new DeletePatientFromMenu(patientenDatenbank).execute(this));
 
 
-        // ActionListener für Hauptmenü (Patient)
+        // ActionListener für Hauptmenü (Patient) funktionieren tun sie ??
         patientMenu.addMenuListener(new javax.swing.event.MenuListener() {
             @Override
             public void menuSelected(javax.swing.event.MenuEvent e) {

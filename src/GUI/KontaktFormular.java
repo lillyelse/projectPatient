@@ -18,8 +18,8 @@ public class KontaktFormular extends JPanel {
 
 
     public KontaktFormular() {
-        this.kontaktFormularPanel = new JPanel(new BorderLayout());
 
+        this.patientenDatenbank = new Patientendatenbank();
 
         // Initialisiere das Kontaktformular Panel
         JPanel kontaktFormularPanel = new JPanel(new BorderLayout());
@@ -91,8 +91,9 @@ public class KontaktFormular extends JPanel {
                 if (success) {
                     // Erfolgsmeldung, wenn der Patient erfolgreich hinzugefügt wurde
                     JOptionPane.showMessageDialog(null, "Patient erfolgreich hinzugefügt!");
-                    hauptGUI.refreshPatientTable(); // Patiententabelle aktualisieren
                     clearFields(); // Eingabefelder leeren
+                    hauptGUI.refreshPatientTable(); // Patiententabelle aktualisieren
+
                 } else {
                     // Fehlerfall: Zeige eine Fehlermeldung, wenn das Hinzufügen nicht erfolgreich war
                     JOptionPane.showMessageDialog(null, "Fehler beim Hinzufügen des Patienten. Bitte versuchen Sie es erneut.",
@@ -138,13 +139,33 @@ public class KontaktFormular extends JPanel {
                             JOptionPane.showMessageDialog(this, "Patient erfolgreich gelöscht!");
                             hauptGUI.refreshPatientTable();
                         } else {
-                            JOptionPane.showMessageDialog(this, "Fehler beim Löschen des Patienten!");
+                            JOptionPane.showMessageDialog(this, "Kein Patient mit dieser ID gefunden!");
                         }
                     }
                 } else {
                     JOptionPane.showMessageDialog(this, "Kein Patient mit dieser ID gefunden!");
                 }
             } catch (NumberFormatException | SQLException e) {
+                JOptionPane.showMessageDialog(this, "Ungültige ID eingegeben. Bitte geben Sie eine gültige Zahl ein.");
+            }
+        }
+    }
+
+    private void editPatient() throws SQLException {
+        String patientIdStr = JOptionPane.showInputDialog(this, "Geben Sie die PatientID ein, die Sie bearbeiten möchten:");
+        if (patientIdStr != null && !patientIdStr.isEmpty()) {
+            try {
+                int patientId = Integer.parseInt(patientIdStr);
+                Patient patient = patientenDatenbank.getPatientById(patientId);
+                if (patient != null) {
+                    // Öffne das Fenster zum Bearbeiten des Patienten
+                    PatientEditDialog dialog = new PatientEditDialog();
+                    dialog.setPatient(patient, patientenDatenbank, hauptGUI); // Übergabe der notwendigen Parameter
+                    dialog.setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Kein Patient mit dieser ID gefunden!");
+                }
+            } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Ungültige ID eingegeben. Bitte geben Sie eine gültige Zahl ein.");
             }
         }
