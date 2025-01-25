@@ -5,6 +5,7 @@ import models.Patient;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 
 public class KontaktFormular extends JPanel {
 
@@ -127,5 +128,27 @@ public class KontaktFormular extends JPanel {
             }
         }
     }
+    public Patient createPatientFromFields() {
+        try {
+            String vorname = vornameField.getText().trim();
+            String nachname = nachnameField.getText().trim();
+            String geburtsdatumStr = geburtsdatumField.getText().trim();
+            String strasse = strasseField.getText().trim();
+            String plz = plzField.getText().trim();
+            String ort = ortField.getText().trim();
+            String bundesland = bundeslandField.getText().trim();
+            int geschlecht = Integer.parseInt(geschlechtField.getText().trim());
+            String krankenkasse = krankenkasseField.getText().trim();
+            int angehoeriger = Integer.parseInt(angehoerigerField.getText().trim());
 
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date utilDate = formatter.parse(geburtsdatumStr);
+            java.sql.Date geburtsdatum = new java.sql.Date(utilDate.getTime());
+
+            return new Patient(0, vorname, nachname, geburtsdatum, strasse, plz, ort, bundesland, geschlecht, krankenkasse, angehoeriger);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Fehler bei der Eingabe: " + ex.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
 }
