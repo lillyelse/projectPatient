@@ -1,3 +1,5 @@
+package database;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -16,10 +18,13 @@ public class DatenBankAnbindung {
     private DatenBankAnbindung() {}
 
     public Connection coni(){
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver"); // MySQL-Treiber laden
-        } catch (ClassNotFoundException e) {
-            System.err.println("JDBC-Treiber konnte nicht geladen werden: " + e.getMessage());
+        if (con == null || isClose()) {   //test
+
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver"); // MySQL-Treiber laden
+            } catch (ClassNotFoundException e) {
+                System.err.println("JDBC-Treiber konnte nicht geladen werden: " + e.getMessage());
+            }
         }
 
         try{
@@ -41,7 +46,7 @@ public class DatenBankAnbindung {
 
         return instanz;
     }
-    public void close() {
+    public boolean isClose() {
         if (con!= null) {
             try {
                 if (!con.isClosed()) {
