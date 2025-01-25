@@ -1,24 +1,25 @@
 package models;
 
+import java.util.Date;
+
 public class Patient {
 
     private int patientid;
     private String vorname;
     private String nachname;
-    private String geburtsdatum;
+    private Date geburtsdatum;
     private String strasse;
     private String plz;
     private String ort;
     private String bundesland;
     private int geschlechtID; // 1 = männlich, 2 = weiblich, 3 = divers
     private String krankenkasse;
-    private int angehoerigeID;
+    private int angehoerigerID;
 
-    public Patient(int patientid, String vorname, String nachname, String geburtsdatum,
-                   String strasse, String plz,
-                   String ort, String bundesland, int geschlechtID,
-                   String krankenkasse, int angehoerigeID )
-    {
+    public Patient(int patientid, String vorname, String nachname, java.sql.Date geburtsdatum,
+                   String strasse, String plz, String ort, String bundesland,
+                   int geschlechtID, String krankenkasse, int angehoerigerID) {
+
         this.patientid = patientid;
         this.vorname = vorname;
         this.nachname = nachname;
@@ -29,22 +30,48 @@ public class Patient {
         this.bundesland = bundesland;
         this.geschlechtID = geschlechtID;
         this.krankenkasse = krankenkasse;
-        this.angehoerigeID = angehoerigeID;
+        this.angehoerigerID = angehoerigerID;
+
     }
 
-    // Getter und Setter
-    public int getpatientid() { return patientid; }
-    public void setpatientid(int id) { this.patientid = patientid; }
 
-    public String getVorname() { return vorname; }
-    public void setVorname(String vorname) { this.vorname = vorname; }
+    // Getter und Setter für Patientid
+    public int getPatientid() {
+        return patientid;
+    }
 
-    public String getNachname() { return nachname; }
-    public void setNachname(String nachname) { this.nachname = nachname; }
+    public void setPatientid(int patientid) {
+        this.patientid = patientid;
+    }
 
-    public String getGeburtsdatum() { return geburtsdatum; }
-    public void setGeburtsdatum(String geburtsdatum) { this.geburtsdatum = geburtsdatum; }
+    // Getter und Setter für Vorname
+    public String getVorname() {
+        return vorname;
+    }
 
+    public void setVorname(String vorname) {
+        this.vorname = vorname;
+    }
+
+    // Getter und Setter für Nachname
+    public String getNachname() {
+        return nachname;
+    }
+
+    public void setNachname(String nachname) {
+        this.nachname = nachname;
+    }
+
+    // Getter und Setter für Geburtsdatum
+    public Date getGeburtsdatum() {
+        return geburtsdatum;
+    }
+
+    public void setGeburtsdatum(Date geburtsdatum) {
+        this.geburtsdatum = geburtsdatum;
+    }
+
+    // Getter und Setter für Straße
     public String getStrasse() {
         return strasse;
     }
@@ -53,6 +80,7 @@ public class Patient {
         this.strasse = strasse;
     }
 
+    // Getter und Setter für PLZ
     public String getPlz() {
         return plz;
     }
@@ -61,6 +89,7 @@ public class Patient {
         this.plz = plz;
     }
 
+    // Getter und Setter für Ort
     public String getOrt() {
         return ort;
     }
@@ -69,6 +98,7 @@ public class Patient {
         this.ort = ort;
     }
 
+    // Getter und Setter für Bundesland
     public String getBundesland() {
         return bundesland;
     }
@@ -77,6 +107,7 @@ public class Patient {
         this.bundesland = bundesland;
     }
 
+    // Getter und Setter für GeschlechtID
     public int getGeschlechtID() {
         return geschlechtID;
     }
@@ -85,6 +116,7 @@ public class Patient {
         this.geschlechtID = geschlechtID;
     }
 
+    // Getter und Setter für Krankenkasse
     public String getKrankenkasse() {
         return krankenkasse;
     }
@@ -93,17 +125,18 @@ public class Patient {
         this.krankenkasse = krankenkasse;
     }
 
-    public int getAngehoerigeID() {
-        return angehoerigeID;
+    // Getter und Setter für AngehoerigerID
+    public int getAngehoerigerID() {
+        return angehoerigerID;
     }
 
-    public void setAngehoerigeID(int angehoerigeID) {
-        this.angehoerigeID = angehoerigeID;
+    public void setAngehoerigerID(int angehoerigerID) {
+        this.angehoerigerID = angehoerigerID;
     }
 
     @Override
     public String toString() {
-        return "GUI.GUI.models.Patient{" +
+        return "Person.Patient{" +
                 "patientid=" + patientid +
                 ", vorname='" + vorname + '\'' +
                 ", nachname='" + nachname + '\'' +
@@ -115,4 +148,6 @@ public class Patient {
                 '}';
     }
 
+
 }
+
