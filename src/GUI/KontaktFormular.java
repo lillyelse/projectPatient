@@ -54,5 +54,17 @@ public class KontaktFormular extends JPanel {
         formPanel.add(krankenkasseField);
         formPanel.add(new JLabel("Angehörige ID:"));
         formPanel.add(angehoerigerField);
+
+        // Kontaktformular Layout zum Panel hinzugefügt
+        kontaktFormularPanel.add(formPanel, BorderLayout.CENTER);
+
+        // Button Panel erstellen
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+
+        // Buttons erstellen
+        JButton hinzufuegenButton = new JButton("Hinzufügen");
+        JButton bearbeitenButton = new JButton("Bearbeiten");
+        JButton loeschenButton = new JButton("Löschen");
+
     }
 }
