@@ -18,10 +18,25 @@ public class Login extends JFrame{
         setTitle("Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-
         setSize(400, 200);
         setLocationRelativeTo(null);
 
+        // Hintergrundbild laden und anzeigen!!
+        JPanel backgroundPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                ImageIcon backgroundIcon = OptimizedImageLoader.loadImage(
+                        "src/Lib/DrBerger.png", getWidth(), getHeight()
+                );
+                if (backgroundIcon != null) {
+                    g.drawImage(backgroundIcon.getImage(), 0, 0, getWidth(), getHeight(), this);
+                }
+            }
+        };
+        backgroundPanel.setLayout(new BorderLayout());
+// Content Pane und Hintergrund-Panel setzen!!!
+        setContentPane(backgroundPanel);
 
         // Panel für Login-Formular
         JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10));
@@ -45,8 +60,8 @@ public class Login extends JFrame{
 
         messageLabel = new JLabel("", SwingConstants.CENTER);
 
-        contentPane.add(panel, BorderLayout.CENTER);
-        contentPane.add(messageLabel, BorderLayout.SOUTH);
+        backgroundPanel.add(panel, BorderLayout.CENTER); // Login-Panel zum Hintergrund-Panel hinzufügen
+        backgroundPanel.add(messageLabel, BorderLayout.SOUTH);
 
         // Login-Button Aktion
         OKButton.addActionListener(new ActionListener() {
@@ -74,6 +89,28 @@ public class Login extends JFrame{
     private boolean authenticate(String username, String password) {
         // Temporäre Authentifizierung, später durch DB-Check ersetzen
         return "admin".equals(username) && "password123".equals(password);
+    }
+
+    static class OptimizedImageLoader {
+        /**
+         * Lädt ein Bild von der angegebenen Datei und skaliert es auf die angegebene Breite und Höhe.
+         *
+         * @param path  Der Pfad zur Bilddatei.
+         * @param width Die gewünschte Breite des Bildes.
+         * @param height Die gewünschte Höhe des Bildes.
+         *
+         */
+        public static ImageIcon loadImage(String path, int width, int height) {
+            try {
+                ImageIcon icon = new ImageIcon(path);
+                Image img = icon.getImage();
+                Image scaledImg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+                return new ImageIcon(scaledImg);
+            } catch (Exception e) {
+                System.err.println("Fehler beim Laden des Bildes: " + e.getMessage());
+                return null;
+            }
+        }
     }
 
 }
