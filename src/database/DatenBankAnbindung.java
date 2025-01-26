@@ -21,7 +21,7 @@ public class DatenBankAnbindung {
 
     /**
      * Privater Konstruktor, um eine Instanziierung außerhalb der Klasse zu verhindern.
-     * Der Konstruktor ist privat, um das Das Singleton-Muster zu gewährleisten.
+     * Somit wird das Singleton-Muster gewährleistet, bei dem nur eine Instanz existieren darf.
      */
     private DatenBankAnbindung() {
     }

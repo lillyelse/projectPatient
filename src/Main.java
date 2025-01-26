@@ -12,15 +12,12 @@ public class Main {
      */
     public static void main(String[] args) {
 
-
-        //Singleton Pattern,weil nur eine Instanz existieren darf- Der Konstruktor von Login ist privat
         /**
-         * Initialisiert die Login-GUI. Es handelt sich um ein Singleton-Pattern,
-         * bei dem nur eine Instanz von Login existieren darf.
+         * Initialisiert die Login-GUI.
          */
         new Login();
+    }
 
 
-            }
-        }
+}
 
