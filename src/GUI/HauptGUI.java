@@ -14,7 +14,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 
-
+/**
+ * Die Klasse HauptGUI erstellt die Haupt-Benutzeroberfläche.
+ * Die Klasse erbt von JFrame.
+ */
 public class HauptGUI extends JFrame {
 
     private SearchPatientFromMenu searchPatientFromMenu;
@@ -23,9 +26,12 @@ public class HauptGUI extends JFrame {
     private KontaktFormular kontaktFormular;
     private JTable table;
 
+    /**
+     * Konstruktor für die HauptGUI.
+     * @param patientenDatenbank (wird für CRUD-Operationen verwendet)
+     */
     public HauptGUI(Patientendatenbank patientenDatenbank) {
         this.patientenDatenbank = patientenDatenbank;
-
 
         // Erstelle das Haupt-Panel und setze das Layout
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -37,7 +43,7 @@ public class HauptGUI extends JFrame {
         KontaktFormular kontaktFormularPanel = new KontaktFormular();
 
         // Füge die Tabs hinzu
-        tabbedPane.addTab("Patiententabelle", createTablePanel()); // Hier kannst du die Tabelle einfügen
+        tabbedPane.addTab("Patiententabelle", createTablePanel()); // Hier kann man die Tabelle einfügen
         tabbedPane.addTab("Kontaktformular", kontaktFormularPanel); // Das Kontaktformular wird hier eingefügt
 
         // Füge das JTabbedPane zum mainPanel hinzu
@@ -48,33 +54,35 @@ public class HauptGUI extends JFrame {
 
         setTitle("Patientenverwaltung");
         setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   //Verhalten des JFrames, wenn der Benutzer das Fenster schließt/ Klicken auf das X
+        setLocationRelativeTo(null);    //Position des Fensters. null: Fenster nicht abhängig von anderem, sondern einfach zentriert am Bildschirm
 
 
-
+        // Menüleiste
         JMenuBar menuBar = new JMenuBar();
+        // Pulldownmenü
         JMenu patientMenu = new JMenu("Patient");
-
+        // Menüeinträge
         JMenuItem searchItem = new JMenuItem("Suchen");
         JMenuItem addItem = new JMenuItem("Hinzufügen");
         JMenuItem editItem = new JMenuItem("Bearbeiten");
         JMenuItem deleteItem = new JMenuItem("Löschen");
-
+        // Menüeinträge zum Pulldownmenü hinzufügen
         patientMenu.add(searchItem);
         patientMenu.add(addItem);
         patientMenu.add(editItem);
         patientMenu.add(deleteItem);
-
+        // Pulldownmenü zu Menüleiste hinzufügen
         menuBar.add(patientMenu);
+        // sagt dem JFrame, dass es die Menüleiste menuBar verwenden soll.
         setJMenuBar(menuBar);
 
+        // ActionListener für die Menüeinträge
         searchItem.addActionListener(e -> searchPatientFromMenu.searchPatient());
         addItem.addActionListener(e -> addPatientFromMenu.addPatient());
-        //unteren beiden funktionieren noch nicht-noch nicht bearbeitet
+        // die unteren beiden funktionieren noch nicht-noch nicht bearbeitet:
         editItem.addActionListener(e -> new EditPatientFromMenu(patientenDatenbank).execute(this));
         deleteItem.addActionListener(e -> new DeletePatientFromMenu(patientenDatenbank).execute(this));
-
 
         // ActionListener für Hauptmenü (Patient) funktionieren tun sie ??
         patientMenu.addMenuListener(new javax.swing.event.MenuListener() {
@@ -94,6 +102,8 @@ public class HauptGUI extends JFrame {
                 // Keine Aktion erforderlich
             }
         });
+
+        // Listener für das Schließen des Fensters
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -104,12 +114,16 @@ public class HauptGUI extends JFrame {
         refreshPatientTable();
         setVisible(true);
     }
+    // Ende Konstruktor
 
 
 
+    // METHODEN
 
-//Methoden
-
+    /**
+     * Erstellt das Panel, das die Patiententabelle enthält.
+     * @return Ein JScrollPane, das die Tabelle enthält.
+     */
     private JScrollPane createTablePanel() {
         table = new JTable();
         refreshPatientTable();
@@ -117,7 +131,9 @@ public class HauptGUI extends JFrame {
     }
 
 
-
+    /**
+     * Aktualisiert die Patiententabelle mit den aktuellen Daten aus der Datenbank.
+     */
     public void refreshPatientTable() {
         try {
             java.util.List<Patient> patients = patientenDatenbank.getAllPatients();
@@ -127,6 +143,10 @@ public class HauptGUI extends JFrame {
         }
     }
 
+    /**
+     * Aktualisiert die Tabelle mit den übergebenen Patientendaten.
+     * @param patients Eine Liste von Patienten, die in der Tabelle angezeigt werden sollen.
+     */
     private void updatePatientTable(List<Patient> patients) {
         // Spaltennamen für die Tabelle
         String[] columnNames = {"PatientID", "Vorname", "Nachname", "Geburtsdatum", "Straße", "PLZ", "Ort", "Bundesland", "GeschlechtID", "Krankenkasse", "AngehoerigeID"};
