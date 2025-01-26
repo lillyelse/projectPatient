@@ -5,6 +5,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Die Login-Klasse erstellt das Login-Fenster, in dem der:die Benutzer:in Name
+ * und Passwort eingeben kann, um auf das Hauptfenster zuzugreifen.
+ * Sie enthält ein Login-Formular und überprüft die Eingabedaten.
+ */
 public class Login extends JFrame{
 
     private JTextField usernameField;
@@ -14,10 +19,13 @@ public class Login extends JFrame{
     private JButton OKButton;
     private JLabel messageLabel;
 
+    /**
+     * Konstruktor, der das Login-Fenster erstellt und die Benutzeroberfläche initialisiert.
+     * Setzt das Layout, fügt die Komponenten hinzu und definiert das Verhalten der Buttons.
+     */
     public Login(){
         setTitle("Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         setSize(400, 200);
         setLocationRelativeTo(null);
 
@@ -35,7 +43,8 @@ public class Login extends JFrame{
             }
         };
         backgroundPanel.setLayout(new BorderLayout());
-// Content Pane und Hintergrund-Panel setzen!!!
+
+        // Content Pane und Hintergrund-Panel setzen!!!
         setContentPane(backgroundPanel);
 
         // Panel für Login-Formular
@@ -86,11 +95,20 @@ public class Login extends JFrame{
         setVisible(true);
     }
 
+    /**
+     * Die Methode führt die Authentifizierung durch. Sie prüft, ob der Benutzername und das Passwort korrekt sind.
+     * @param username Benutzername
+     * @param password Passwort
+     * @return true, wenn die Authentifizierung erfolgreich ist, sonst false
+     */
     private boolean authenticate(String username, String password) {
         // Temporäre Authentifizierung, später durch DB-Check ersetzen
         return "admin".equals(username) && "password123".equals(password);
     }
 
+    /**
+     * Diese Klasse lädt ein Bild von der angegebenen Datei und skaliert es auf die gewünschte Größe.
+     */
     static class OptimizedImageLoader {
         /**
          * Lädt ein Bild von der angegebenen Datei und skaliert es auf die angegebene Breite und Höhe.
