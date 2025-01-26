@@ -1,7 +1,7 @@
 package GUI.Patient;
 
 import GUI.Patientendatenbank;
-import models.Patient;     //Models -> Patient geplant
+import models.Patient;     //Models -> Patient:in geplant
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,17 +9,28 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 
-
+/**
+ * Die Klasse AddPatientFromMenu stellt eine Benutzeroberfläche zur Verfügung, um neue Patienten:innen zur Datenbank hinzuzufügen.
+ * Sie ermöglicht es, dem:der Benutzer:in, Patientendaten einzugeben, zu validieren und in der Datenbank zu speichern.
+ */
 public class AddPatientFromMenu {
 
+    // ATTRIBUT
     private Patientendatenbank patientenDatenbank;
 
-
+    /**
+     * Konstruktor der Klasse AddPatientFromMenu
+     * @param patientenDatenbank Die Instanz der Patientendatenbank
+     */
     public AddPatientFromMenu(Patientendatenbank patientenDatenbank) {
             this.patientenDatenbank = patientenDatenbank;
         }
 
-
+    /**
+     * Die Methode zeigt ein Fenster zur Eingabe von Patientendaten an
+     * und fügt den:die neue:n Patient:in zur Datenbank hinzu.
+     * Sie überprüft, ob alle Eingabefelder ausgefüllt sind und validiert die Eingaben.
+     */
     public void addPatient() {
             // Panel für die Eingabefelder
             JPanel panel = new JPanel();
