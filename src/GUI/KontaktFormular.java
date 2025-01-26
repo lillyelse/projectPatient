@@ -7,8 +7,15 @@ import java.awt.*;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
+/**
+ * Die Klasse KontaktFormular stellt eine Benutzeroberfläche bereit,
+ * um Patientendaten zu erfassen, hinzuzufügen, zu bearbeiten und zu löschen.
+ * Die GUI besteht aus einem Formular, in dem Patienteninformationen eingeben werden können.
+ * Es gibt auch Buttons zum Hinzufügen, Bearbeiten und Löschen von Patient:innen.
+ */
 public class KontaktFormular extends JPanel {
 
+    // ATTRIBUTE
     private JPanel kontaktFormularPanel;
     private JTextField vornameField, nachnameField, geburtsdatumField, strasseField, plzField, ortField,
             bundeslandField, geschlechtField, krankenkasseField, angehoerigerField;
@@ -16,7 +23,13 @@ public class KontaktFormular extends JPanel {
     private Patientendatenbank patientenDatenbank;
     private HauptGUI hauptGUI;
 
-
+    /**
+     * Konstruktor für die Klasse KontaktFormular
+     * Dieser Konstruktor initialisiert das Kontaktformular mit verschiedenen Eingabefeldern
+     * und fügt diese zum Formularpanel hinzu.
+     * Es werden Buttons für das Hinzufügen, Bearbeiten und Löschen von Patient:innen erstellt
+     * und entsprechende ActionListener hinzugefügt.
+     */
     public KontaktFormular() {
 
         this.patientenDatenbank = new Patientendatenbank();
@@ -124,7 +137,18 @@ public class KontaktFormular extends JPanel {
 
     }
 
+
+    /**
+     * Die Methode löscht einen Patienten aus der Datenbank.
+     * Die Methode fordert zur Eingabe einer PatientID auf.
+     * Nachdem die ID eingegeben wurde, wird überprüft, ob ein Patient mit dieser ID in der Datenbank vorhanden ist.
+     * Wenn der Patient gefunden wird, wird eine Bestätigungsmeldung angezeigt, um den Löschvorgang zu bestätigen.
+     * Wenn der Benutzer bestätigt,wird der Patient aus der Datenbank gelöscht.
+     * Falls der Patient nicht gefunden wird oder ID ungültig, wird eine entsprechende Fehlermeldung angezeigt.
+     * @throws SQLException, wenn ein Fehler bei der Datenbankabfrage auftritt.
+     */
     private void deletePatient() {
+        // fordert zur Eingabe einer PatientID auf.
         String patientIdStr = JOptionPane.showInputDialog(this, "Geben Sie die PatientID ein, die Sie löschen möchten:");
         if (patientIdStr != null && !patientIdStr.isEmpty()) {
             try {
@@ -151,6 +175,17 @@ public class KontaktFormular extends JPanel {
         }
     }
 
+
+
+    /**
+     * Diese Methode bearbeitet die Daten eine:r Patient:in.
+     * Die Methode fordert den:die Benutzer:in auf, die PatientenID einzugeben.
+     * Anschließend wird der:die entsprechende Patient:in aus der Datenbank abgerufen.
+     * Falls Patient:in existiert, wird ein Dialogfenster zum Bearbeiten der Patientendaten geöffnet.
+     * Falls der:die Patient:in nicht gefunden wird oder eine ungültige ID eingegeben wird,
+     * wird eine Fehlermeldung angezeigt.
+     * @throws SQLException wenn ein Fehler beim Abrufen des:der Patient:in aus der Datenbank auftritt.
+     */
     private void editPatient() throws SQLException {
         String patientIdStr = JOptionPane.showInputDialog(this, "Geben Sie die PatientID ein, die Sie bearbeiten möchten:");
         if (patientIdStr != null && !patientIdStr.isEmpty()) {
@@ -170,6 +205,16 @@ public class KontaktFormular extends JPanel {
             }
         }
     }
+
+
+    /**
+     * Diese Methode erstellt ein Patient-Objekt basierend auf den Werten, die in den Formularfeldern eingegeben wurden.
+     * Sie extrahiert die Daten aus den Eingabefeldern des Kontaktformulars, validiert und konvertiert sie
+     * und erstellt ein neues Patient-Objekt.
+     * Sollte eine der Eingaben ungültig oder fehlerhaft sein,
+     * wird eine Fehlermeldung angezeigt und null zurückgegeben.
+     * @return Ein neues Patient}-Objekt mit den eingegebenen Werten oder null, wenn die Eingaben fehlerhaft sind.
+     */
     public Patient createPatientFromFields() {
         try {
             String vorname = vornameField.getText().trim();
