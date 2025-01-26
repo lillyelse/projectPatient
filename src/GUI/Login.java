@@ -17,7 +17,8 @@ public class Login extends JFrame{
     private JPanel contentPane;
     private JButton abbrechenButton;
     private JButton OKButton;
-    private JLabel messageLabel;
+    private JLabel passwordlabel;
+    private JLabel userlabel;
 
     /**
      * Konstruktor, der das Login-Fenster erstellt und die Benutzeroberfläche initialisiert.
@@ -26,7 +27,7 @@ public class Login extends JFrame{
     public Login(){
         setTitle("Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 200);
+        setSize(550, 400);
         setLocationRelativeTo(null);
 
         // Hintergrundbild laden und anzeigen!!
@@ -35,7 +36,7 @@ public class Login extends JFrame{
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 ImageIcon backgroundIcon = OptimizedImageLoader.loadImage(
-                        "src/Lib/DrBerger.png", getWidth(), getHeight()
+                        "src/Lib/img.png", getWidth(), getHeight()
                 );
                 if (backgroundIcon != null) {
                     g.drawImage(backgroundIcon.getImage(), 0, 0, getWidth(), getHeight(), this);
@@ -48,31 +49,48 @@ public class Login extends JFrame{
         setContentPane(backgroundPanel);
 
         // Panel für Login-Formular
-        JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10));
+        JPanel panel = new JPanel(new GridLayout(3, 2, 80, 80));
         panel.setOpaque(false);
 
         // Komponenten hinzufügen
-        panel.add(new JLabel("Benutzername:"));
-        usernameField = new JTextField();
+        JLabel userlabel = new JLabel("Benutzername:");
+        userlabel.setForeground(Color.WHITE); // Schriftfarbe auf weiss setzen
+        userlabel.setFont(new Font("Arial", Font.BOLD, 26)); // Schriftgröße und -stil ändern
+        panel.add(userlabel);
+
+        JTextField usernameField = new JTextField(15); // Breite des Textfeldes (15 Zeichen)
+        usernameField.setBackground(Color.BLACK); // Hintergrundfarbe
+        usernameField.setForeground(Color.WHITE); // Schriftfarbe
+        usernameField.setFont(new Font("Arial", Font.PLAIN, 20)); // Schriftgröße ändern
+        usernameField.setPreferredSize(new Dimension(150, 25)); // Größe explizit setzen
         panel.add(usernameField);
 
-        panel.add(new JLabel("Passwort:"));
-        passwordField = new JPasswordField();
+        JLabel passwordlabel = new JLabel("Passwort:");
+        passwordlabel.setForeground(Color.WHITE); // Schriftfarbe auf weiss setzen
+        passwordlabel.setFont(new Font("Arial", Font.BOLD, 26)); // Schriftgröße und -stil ändern
+        panel.add(passwordlabel);
+
+        JPasswordField passwordField = new JPasswordField(15); // Breite des Textfeldes (15 Zeichen)
+        passwordField.setBackground(Color.BLACK); // Hintergrundfarbe
+        passwordField.setForeground(Color.WHITE); // Schriftfarbe
+        passwordField.setFont(new Font("Arial", Font.PLAIN, 20)); // Schriftgröße ändern
+        passwordField.setPreferredSize(new Dimension(150, 25)); // Größe explizit setzen
         panel.add(passwordField);
 
         OKButton = new JButton("Login");
         abbrechenButton= new JButton("Abbrechen");
-        messageLabel = new JLabel("", SwingConstants.CENTER);
+        passwordlabel = new JLabel("", SwingConstants.CENTER);
 
         panel.add(OKButton);
         panel.add(abbrechenButton);
 
-        messageLabel = new JLabel("", SwingConstants.CENTER);
+        passwordlabel = new JLabel("", SwingConstants.CENTER);
 
         backgroundPanel.add(panel, BorderLayout.CENTER); // Login-Panel zum Hintergrund-Panel hinzufügen
-        backgroundPanel.add(messageLabel, BorderLayout.SOUTH);
+        backgroundPanel.add(passwordlabel, BorderLayout.SOUTH);
 
         // Login-Button Aktion
+        JLabel finalPasswordlabel = passwordlabel;
         OKButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -84,7 +102,7 @@ public class Login extends JFrame{
                     Patientendatenbank patientenDatenbank = new Patientendatenbank();
                     new HauptGUI(patientenDatenbank);
                 } else {
-                    messageLabel.setText("Ungültige Anmeldedaten!");
+                    finalPasswordlabel.setText("Ungültige Anmeldedaten!");
                 }
             }
         });
