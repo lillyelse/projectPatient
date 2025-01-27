@@ -119,11 +119,11 @@ import java.util.List;
                  PreparedStatement deleteStmt = connection.prepareStatement(deletePatientQuery)) {
 
                 // Setze die PatientID auf NULL in der Befund-Tabelle
-                updateStmt.setInt(1, patientId);
+                updateStmt.setInt(11, patientId);
                 int befundeUpdated = updateStmt.executeUpdate();
 
                 // Lösche den Patienten aus der Person.Patient-Tabelle
-                deleteStmt.setInt(1, patientId);
+                deleteStmt.setInt(11, patientId);
                 int patientDeleted = deleteStmt.executeUpdate();
 
                 // Wenn sowohl die Befunde geändert als auch der Person.Patient gelöscht wurde, dann true zurückgeben
@@ -137,20 +137,21 @@ import java.util.List;
 
         }
         public boolean updatePatient(Patient patient) {
-            String query = "UPDATE patient SET Vorname = ?, Nachname = ?, Geburtsdatum = ?, Strasse = ?, PLZ = ?, Ort = ?, Bundesland = ?, GeschlechtID = ?, Krankenkasse = ?, AngehoerigeID = ? WHERE PatientID = ?";
+            String query = "UPDATE patient SET Vorname = ?, Nachname = ?, Geburtsdatum = ?, Strasse = ?, PLZ = ?, Ort = ?, Bundesland = ?, GeschlechtID = ?, Krankenkasse = ?, AngehoerigerID = ? WHERE PatientID = ?";
             try (Connection connection = db.coni();
                  PreparedStatement pstmt = connection.prepareStatement(query)) {
-                pstmt.setInt(1, patient.getPatientid());
-                pstmt.setString(2, patient.getVorname());
-                pstmt.setString(3, patient.getNachname());
-                pstmt.setDate(4, (Date) patient.getGeburtsdatum());
-                pstmt.setString(5, patient.getStrasse());
-                pstmt.setString(6, patient.getPlz());
-                pstmt.setString(7, patient.getOrt());
-                pstmt.setString(8, patient.getBundesland());
-                pstmt.setInt(9, patient.getGeschlechtID());
-                pstmt.setString(10, patient.getKrankenkasse());
-                pstmt.setInt(11, patient.getAngehoerigerID());
+
+                pstmt.setString(1, patient.getVorname());
+                pstmt.setString(2, patient.getNachname());
+                pstmt.setDate(3, (Date) patient.getGeburtsdatum());
+                pstmt.setString(4, patient.getStrasse());
+                pstmt.setString(5, patient.getPlz());
+                pstmt.setString(6, patient.getOrt());
+                pstmt.setString(7, patient.getBundesland());
+                pstmt.setInt(8, patient.getGeschlechtID());
+                pstmt.setString(9, patient.getKrankenkasse());
+                pstmt.setInt(10, patient.getAngehoerigerID());
+                pstmt.setInt(11, patient.getPatientid());
 
                 return pstmt.executeUpdate() > 0;
             } catch (SQLException e) {

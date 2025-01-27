@@ -46,11 +46,11 @@ public class PatientEditDialog extends JDialog {
         formPanel.add(ortField);
         formPanel.add(new JLabel("Bundesland:"));
         formPanel.add(bundeslandField);
-        formPanel.add(new JLabel("Geschlecht ID:"));
+        formPanel.add(new JLabel("GeschlechtID:"));
         formPanel.add(geschlechtField);
         formPanel.add(new JLabel("Krankenkasse:"));
         formPanel.add(krankenkasseField);
-        formPanel.add(new JLabel("Angehörige ID:"));
+        formPanel.add(new JLabel("AngehörigerID:"));
         formPanel.add(angehoerigerField);
 
         add(formPanel, BorderLayout.CENTER);
