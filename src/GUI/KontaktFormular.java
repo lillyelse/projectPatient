@@ -120,7 +120,24 @@ public class KontaktFormular extends JPanel {
             }
         });
 
-        bearbeitenButton.addActionListener(e -> new PatientEditDialog());
+        bearbeitenButton.addActionListener(e -> {
+            String patientIdStr = JOptionPane.showInputDialog(this, "Geben Sie die PatientID ein, die Sie bearbeiten möchten:");
+            if (patientIdStr != null && !patientIdStr.isEmpty()) {
+                try {
+                    int patientId = Integer.parseInt(patientIdStr);
+                    Patient patient = patientenDatenbank.getPatientById(patientId);
+                    if (patient != null) {
+                        PatientEditDialog dialog = new PatientEditDialog();
+                        dialog.setPatient(patient, patientenDatenbank, hauptGUI);
+                        dialog.setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Kein Patient mit dieser ID gefunden!");
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "Ungültige ID eingegeben. Bitte geben Sie eine gültige Zahl ein.");
+                }
+            }
+        });
         loeschenButton.addActionListener(e -> deletePatient());
 
         // Füge die Buttons zum Button Panel hinzu
