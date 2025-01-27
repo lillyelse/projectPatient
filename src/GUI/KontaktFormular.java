@@ -6,6 +6,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import com.itextpdf.kernel.colors.ColorConstants;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.property.TextAlignment;
+import com.itextpdf.layout.property.UnitValue;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * Die Klasse KontaktFormular stellt eine Benutzeroberfläche bereit,
@@ -22,6 +33,7 @@ public class KontaktFormular extends JPanel {
     private PatientManager patientManager;
     private Patientendatenbank patientenDatenbank;
     private HauptGUI hauptGUI;
+    private DefaultTableModel tableModel;
 
     /**
      * Konstruktor für die Klasse KontaktFormular
@@ -85,6 +97,9 @@ public class KontaktFormular extends JPanel {
         JButton hinzufuegenButton = new JButton("Hinzufügen");
         JButton bearbeitenButton = new JButton("Bearbeiten");
         JButton loeschenButton = new JButton("Löschen");
+        JButton pdfButton = new JButton("PDF Export");
+        pdfButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
 
         // ActionListener für Buttons hinzufügen!!!
         hinzufuegenButton.addActionListener(e -> {
@@ -139,11 +154,14 @@ public class KontaktFormular extends JPanel {
             }
         });
         loeschenButton.addActionListener(e -> deletePatient());
+        pdfButton.addActionListener(e -> exportToPDF());
 
         // Füge die Buttons zum Button Panel hinzu
         buttonPanel.add(hinzufuegenButton);
         buttonPanel.add(bearbeitenButton);
         buttonPanel.add(loeschenButton);
+        buttonPanel.add(pdfButton);
+        formPanel.add(pdfButton); // Button zum Formular hinzufügen
 
         // Drei Buttons zum Panel vom Kontaktformular Panel hinzugefügt
         kontaktFormularPanel.add(buttonPanel, BorderLayout.SOUTH);
@@ -153,7 +171,74 @@ public class KontaktFormular extends JPanel {
         this.add(kontaktFormularPanel, BorderLayout.CENTER);
 
     }
+    private void exportToPDF() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("PDF speichern unter...");
+        int userSelection = fileChooser.showSaveDialog(this);
 
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            String pdfFilePath = fileChooser.getSelectedFile().getAbsolutePath();
+            if (!pdfFilePath.endsWith(".pdf")) {
+                pdfFilePath += ".pdf"; // .pdf hinzufügen, falls nicht vorhanden
+            }
+
+            try {
+                PdfWriter writer = new PdfWriter(pdfFilePath);
+                PdfDocument pdfDoc = new PdfDocument(writer);
+                Document document = new Document(pdfDoc);
+
+                // Titel hinzufügen
+                document.add(new Paragraph("Patientenbericht")
+                        .setBold().setFontSize(18).setTextAlignment(TextAlignment.CENTER)
+                        .setMarginBottom(20));
+
+                // Kopfzeilen und Spaltenbreite definieren
+                String[] headers = {"ID", "Anrede", "Vorname", "Nachname", "Geburtstag", "Versicherung"}; // Telefon entfernt
+                float[] columnWidths = {30, 60, 80, 80, 100, 100}; // Angepasste Breiten
+                Table table = new Table(columnWidths);
+                table.setWidth(UnitValue.createPercentValue(100));
+
+                // Tabellenkopf hinzufügen
+                for (String header : headers) {
+                    table.addHeaderCell(new Cell()
+                            .add(new Paragraph(header))
+                            .setBackgroundColor(ColorConstants.LIGHT_GRAY)
+                            .setBold()
+                            .setTextAlignment(TextAlignment.CENTER));
+                }
+
+                // Tabellendaten hinzufügen
+                for (int i = 0; i < tableModel.getRowCount(); i++) {
+                    for (int j = 0; j < headers.length; j++) { // Nur relevante Spalten
+                        Object cellValue = tableModel.getValueAt(i, j);
+                        String cellText = (cellValue != null) ? cellValue.toString() : "-";
+
+                         /*   if (j == 4) { // Spalte Geburtstag
+                                cellText = formatDate(cellText); // Nur Datum formatieren
+                            }
+
+                            table.addCell(new Cell()
+                                    .add(new Paragraph(cellText))
+                                    .setTextAlignment(TextAlignment.LEFT)
+                                    .setPadding(5));
+                          */
+
+                    }
+                }
+
+                // Datum des Exports hinzufügen
+                document.add(table);
+                document.add(new Paragraph("Exportiert am: " + LocalDate.now())
+                        .setTextAlignment(TextAlignment.RIGHT).setFontSize(10).setItalic());
+
+                // Dokument schließen
+                document.close();
+                JOptionPane.showMessageDialog(this, "PDF erfolgreich erstellt: " + pdfFilePath);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Fehler beim Speichern: " + e.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
 
     /**
      * Die Methode löscht einen Patienten aus der Datenbank.
@@ -196,7 +281,7 @@ public class KontaktFormular extends JPanel {
 
     /**
      * Diese Methode bearbeitet die Daten eine:r Patient:in.
-     * Die Methode fordert den:die Benutzer:in auf, die PatientenID einzugeben.
+     * Die Methode fordert den: die Benutzer:in auf, die PatientenID einzugeben.
      * Anschließend wird der:die entsprechende Patient:in aus der Datenbank abgerufen.
      * Falls Patient:in existiert, wird ein Dialogfenster zum Bearbeiten der Patientendaten geöffnet.
      * Falls der:die Patient:in nicht gefunden wird oder eine ungültige ID eingegeben wird,
