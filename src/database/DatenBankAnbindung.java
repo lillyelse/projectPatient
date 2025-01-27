@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 /**
  * Die Klasse "DatenBankAnbindung" stellt eine Verbindung zu einer MySQL-Datenbank her.
- * Sie enthält Methoden zum Öffnen, Testen und Schließen der Verbidung.
+ * Sie enthält Methoden zum Öffnen, Testen und Schließen der Verbindung.
  */
 public class DatenBankAnbindung {
 
