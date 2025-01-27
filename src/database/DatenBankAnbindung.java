@@ -55,9 +55,14 @@ public class DatenBankAnbindung {
      */
     public static DatenBankAnbindung getInstanz() {
         if (instanz == null) {
-            instanz = new DatenBankAnbindung();
+            synchronized (DatenBankAnbindung.class) {
+                if (instanz == null) {
+                    instanz = new DatenBankAnbindung();
+                }
+            }
         }
-        return instanz;
+            return instanz;
+
     }
 
     /**
