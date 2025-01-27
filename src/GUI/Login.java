@@ -59,7 +59,7 @@ public class Login extends JFrame{
         panel.add(userlabel);
 
         JTextField usernameField = new JTextField(15); // Breite des Textfeldes (15 Zeichen)
-        usernameField.setBackground(Color.BLACK); // Hintergrundfarbe
+        usernameField.setBackground(Color.GRAY); // Hintergrundfarbe
         usernameField.setForeground(Color.WHITE); // Schriftfarbe
         usernameField.setFont(new Font("Arial", Font.PLAIN, 20)); // Schriftgröße ändern
         usernameField.setPreferredSize(new Dimension(150, 25)); // Größe explizit setzen
@@ -71,7 +71,7 @@ public class Login extends JFrame{
         panel.add(passwordlabel);
 
         JPasswordField passwordField = new JPasswordField(15); // Breite des Textfeldes (15 Zeichen)
-        passwordField.setBackground(Color.BLACK); // Hintergrundfarbe
+        passwordField.setBackground(Color.GRAY); // Hintergrundfarbe
         passwordField.setForeground(Color.WHITE); // Schriftfarbe
         passwordField.setFont(new Font("Arial", Font.PLAIN, 20)); // Schriftgröße ändern
         passwordField.setPreferredSize(new Dimension(150, 25)); // Größe explizit setzen
