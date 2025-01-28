@@ -203,14 +203,14 @@ public class KontaktFormular extends JPanel {
                 PdfDocument pdfDoc = new PdfDocument(writer);
                 Document document = new Document(pdfDoc);
 
-                // Titel hinzufügen
-                document.add(new Paragraph("Patientenbericht")
+                // Titel
+                document.add(new Paragraph("Patientenformular")
                         .setBold().setFontSize(18).setTextAlignment(TextAlignment.CENTER)
                         .setMarginBottom(20));
 
                 // Kopfzeilen und Spaltenbreite definieren
-                String[] headers = {"ID", "Anrede", "Vorname", "Nachname", "Geburtstag", "Versicherung"}; // Telefon entfernt
-                float[] columnWidths = {30, 60, 80, 80, 100, 100}; // Angepasste Breiten
+                String[] headers = {"ID", "Vorname", "Nachname", "Geburtsdatum (YYYY-MM-DD)", "Straße", "PLZ", "Ort", "Bundesland"};
+                float[] columnWidths = {60, 60, 80, 60, 60, 60, 60, 60}; //  Breiten
                 Table table = new Table(columnWidths);
                 table.setWidth(UnitValue.createPercentValue(100));
 
@@ -224,13 +224,20 @@ public class KontaktFormular extends JPanel {
                 }
 
                 // Tabellendaten hinzufügen
+
                 for (int i = 0; i < tableModel.getRowCount(); i++) {
                     for (int j = 0; j < headers.length; j++) { // Nur relevante Spalten
                         Object cellValue = tableModel.getValueAt(i, j);
                         String cellText = (cellValue != null) ? cellValue.toString() : "-";
 
+
+                        table.addCell(new Cell()
+                                .add(new Paragraph(cellText))
+                                .setTextAlignment(TextAlignment.LEFT)
+                                .setPadding(5));
                     }
                 }
+
 
                 // Datum des Exports hinzufügen
                 document.add(table);
