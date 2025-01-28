@@ -102,7 +102,7 @@ public class Login extends JFrame{
                     Patientendatenbank patientenDatenbank = new Patientendatenbank();
                     new HauptGUI(patientenDatenbank);
                 } else {
-                    finalPasswordlabel.setText("Ungültige Anmeldedaten!");
+                    finalPasswordlabel.setText("Ungültige Anmeldedaten! Bitte versuchen Sie es erneut.");
                 }
             }
         });
