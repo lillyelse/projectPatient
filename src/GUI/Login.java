@@ -30,7 +30,7 @@ public class Login extends JFrame{
         setSize(630, 450);
         setLocationRelativeTo(null);
 
-        // Hintergrundbild laden und anzeigen!!
+        // Hintergrundbild laden und anzeigen!
         JPanel backgroundPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {

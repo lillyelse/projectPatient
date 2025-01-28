@@ -18,8 +18,6 @@ public class Patientendatenbank {
     // ATTRIBUT
     private DatenBankAnbindung db;
 
-
-
     /**
      * Konstruktor für die Patientendatenbank.
      * Initialisiert die Verbindung zur Datenbank.
