@@ -166,7 +166,7 @@ public class KontaktFormular extends JPanel {
         buttonPanel.add(bearbeitenButton);
         buttonPanel.add(loeschenButton);
         buttonPanel.add(pdfButton);
-        formPanel.add(pdfButton); // Button zum Formular hinzufügen
+        buttonPanel.add(pdfButton); // Button zum Formular hinzufügen
 
         // Drei Buttons zum Panel vom Kontaktformular Panel hinzugefügt
         kontaktFormularPanel.add(buttonPanel, BorderLayout.SOUTH);
