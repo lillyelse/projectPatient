@@ -9,11 +9,22 @@ import java.util.List;
 
 //für Queries:
 
-    public class Patientendatenbank {
+/**
+ * Diese Klasse stellt Methoden für den Zugriff und die Verwaltung von Patientendaten in der Datenbank bereit.
+ * Sie ermöglicht CRUD-Operationen.
+ */
+public class Patientendatenbank {
 
-        private DatenBankAnbindung db;
+    // ATTRIBUT
+    private DatenBankAnbindung db;
 
-        public Patientendatenbank() {
+
+
+    /**
+     * Konstruktor für die Patientendatenbank.
+     * Initialisiert die Verbindung zur Datenbank.
+     */
+    public Patientendatenbank() {
             db = DatenBankAnbindung.getInstanz();
             db.coni();
         }
@@ -22,10 +33,23 @@ import java.util.List;
                 System.out.println("Fehler: Die Verbindung zur Datenbank wurde nicht korrekt hergestellt.");
                 return null; // Verlasse die Methode, da keine Verbindung besteht
             }
+
+
+     // METHODEN
+
+    /**
+     * Diese Methode ruft die Informationen eine:r Patient:in anhand der ID aus der Datenbank ab.
+     * @param id Die ID des:der Patient:in, der:die abgerufen werden soll.
+     * @return Ein Patient-Objekt oder null, wenn kein:e Patient:in gefunden wurde.
+     */
+    public Patient getPatientById(int id) {
+
             String query = "SELECT * FROM patient WHERE PatientID = ?";
             try (Connection connection = db.coni();
-                 PreparedStatement pstmt = connection.prepareStatement(query)) {
+                // SQL-Anweisung wird vorkompiliert und in ein Objekt gespeichert
+                 PreparedStatement pstmt = connection.prepareStatement(query))  {
                 pstmt.setInt(1, id);
+                // PreparedStatement liefert ein ResultSet-Objekt zurück
                 ResultSet rs = pstmt.executeQuery();
 
                 if (rs.next()) {
@@ -54,13 +78,21 @@ import java.util.List;
         }
 
 
-        public List<Patient> getAllPatients() {
-            List<Patient> patients = new ArrayList<>();
+    /**
+     * Diese Methode ruft alle Patient:innen aus der Datenbank ab.
+     * @return Eine Liste von Patient-Objekten, die alle Patient:innen aus der Datenbank repräsentieren.
+     */
+    public List<Patient> getAllPatients() {
+        //Liste erstellen
+        List<Patient> patients = new ArrayList<>();
             String query = "SELECT * FROM patient";
             try (Connection connection = db.coni();
+                 // Statement wird erstellt
                  Statement statement = connection.createStatement();
+                 // Statement liefert ein ResultSet zurück
                  ResultSet rs = statement.executeQuery(query)) {
 
+                // bewegt den Zeiger des ResultSet-Objekts auf die nächste Zeile in der Ergebnisse, solange es eine nächste Zeile findet
                 while (rs.next()) {
                     patients.add(new Patient(
                             rs.getInt("PatientID"),
@@ -83,7 +115,12 @@ import java.util.List;
         }
 
 
-        public boolean addPatient(Patient patient) {
+    /**
+     * Fügt eine:n neue:n Patient:in zur Datenbank hinzu.
+     * @param patient Das Patient-Objekt, das hinzugefügt werden soll.
+     * @return true, wenn der:die Patient:in erfolgreich hinzugefügt wurde, andernfalls false.
+     */
+    public boolean addPatient(Patient patient) {
             String query = "INSERT INTO patient (Vorname, Nachname, Geburtsdatum, Strasse, PLZ, Ort, Bundesland, GeschlechtID, Krankenkasse, AngehoerigerID) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement pstmt = db.coni().prepareStatement(query)) {
@@ -102,6 +139,9 @@ import java.util.List;
                 pstmt.setString(9, patient.getKrankenkasse());
                 pstmt.setInt(10, patient.getAngehoerigerID());
 
+                // überprüfen, ob ein SQL-Update erfolgreich war:
+                // gibt einen int-Wert zurück: dieser entspricht der Anzahl der betroffenen Zeilen in der Datenbank.
+                // wenn der Wert > 0: true: Mindestens eine Zeile wurde betroffen - ansonsten false: Keine Zeilen wurden betroffen
                 return pstmt.executeUpdate() > 0;
             }
             catch (SQLException e) {
@@ -113,7 +153,14 @@ import java.util.List;
 
         }
 
-        public boolean deletePatient(int patientId) throws SQLException {
+
+    /**
+     * Löscht eine:n Patient:in aus der Datenbank anhand der ID.
+     * @param patientId Die ID des:der Patient:in, der:die gelöscht werden soll.
+     * @return true, wenn Patient:in erfolgreich gelöscht - ansonsten false.
+     * @throws SQLException Wenn ein Fehler bei der Datenbankoperation auftritt
+     */
+    public boolean deletePatient(int patientId) throws SQLException {
 
             String updateBefundQuery = "UPDATE befund SET PatientID = NULL WHERE PatientID = ?";
 
@@ -142,7 +189,14 @@ import java.util.List;
             }
 
         }
-        public boolean updatePatient(Patient patient) {
+
+
+    /**
+     * Aktualisiert die Daten eine:r bestehenden Patient:in in der Datenbank.
+     * @param patient Das Patient-Objekt mit den aktualisierten Daten.
+     * @return true, wenn die Daten erfolgreich aktualisiert wurden, ansonsten false.
+     */
+    public boolean updatePatient(Patient patient) {
             String query = "UPDATE patient SET Vorname = ?, Nachname = ?, Geburtsdatum = ?, Strasse = ?, PLZ = ?, Ort = ?, Bundesland = ?, GeschlechtID = ?, Krankenkasse = ?, AngehoerigerID = ? WHERE PatientID = ?";
             try (Connection connection = db.coni();
                  PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -159,7 +213,11 @@ import java.util.List;
                 pstmt.setInt(10, patient.getAngehoerigerID());
                 pstmt.setInt(11, patient.getPatientid());
 
+                // überprüfen, ob ein SQL-Update erfolgreich war:
+                // gibt einen int-Wert zurück: dieser entspricht der Anzahl der betroffenen Zeilen in der Datenbank.
+                // wenn der Wert > 0: true: Mindestens eine Zeile wurde betroffen - ansonsten false: Keine Zeilen wurden betroffen
                 return pstmt.executeUpdate() > 0;
+
             } catch (SQLException e) {
                 e.printStackTrace();
             }
