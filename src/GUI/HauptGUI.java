@@ -11,6 +11,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
@@ -59,14 +61,17 @@ public class HauptGUI extends JFrame {
 
         // Füge die Tabs hinzu
         JPanel tablePanel = new JPanel(new BorderLayout());
-        tablePanel.add(new JScrollPane(patientTable), BorderLayout.CENTER);
+        //tablePanel.add(new JScrollPane(patientTable), BorderLayout.CENTER);
+
         //tabbedPane.addTab("Patiententabelle",tablePanel);
-        tabbedPane.addTab("Patiententabelle", createTablePanel()); // Hier kann man die Tabelle einfügen
+        tabbedPane.addTab("Patiententabelle", createTablePanel1()); // Hier kann man die Tabelle einfügen
         tabbedPane.addTab("Kontaktformular", kontaktFormularPanel); // Das Kontaktformular wird hier eingefügt
+
+        /*
         searchPatientFromMenu = new SearchPatientFromMenu(patientenDatenbank, patientTable, rowSorter);
         JPanel suchPanel = searchPatientFromMenu.SearchPanel();
         tablePanel.add(suchPanel, BorderLayout.NORTH);
-
+    */
 
         // Setze das ContentPane auf das mainPanel
         setContentPane(mainPanel);
@@ -141,15 +146,65 @@ public class HauptGUI extends JFrame {
     // METHODEN
 
     /**
+     * Erstellt das Panel, das die Patiententabelle mit Suchfunktion enthält.
+     * @return Ein JPanel mit Tabelle und Suchleiste.
+     */
+    private JPanel createTablePanel1() {
+        // Modell für die Tabelle erstellen
+        DefaultTableModel model = new DefaultTableModel();
+        table = new JTable(model);
+
+        // Konfiguriere die Tabelle
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        table.setRowSorter(sorter);
+
+        // Tabelle in ein JScrollPane einbetten
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // Suchfeld und Label erstellen
+        JPanel searchPanel = new JPanel(new BorderLayout());
+        searchPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        JLabel searchLabel = new JLabel("Suchen: ");
+        JTextField searchField = new JTextField();
+
+        // Suchfeld konfigurieren
+        searchField.addActionListener(e-> {
+
+                String text = searchField.getText();
+                if (text.trim().length() == 0) {
+                    sorter.setRowFilter(null);
+                } else {
+                    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                }
+
+        });
+
+        // Komponenten zum Such-Panel hinzufügen
+        searchPanel.add(searchLabel, BorderLayout.WEST);
+        searchPanel.add(searchField, BorderLayout.CENTER);
+
+        // Haupt-Panel erstellen
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(searchPanel, BorderLayout.NORTH);
+        panel.add(scrollPane, BorderLayout.CENTER);
+
+        // Tabelle initialisieren
+
+        refreshPatientTable();
+        return panel;
+    }
+    /**
      * Erstellt das Panel, das die Patiententabelle enthält.
      * @return Ein JScrollPane, das die Tabelle enthält.
      */
-    private JScrollPane createTablePanel() {
+   /* private JScrollPane createTablePanel() {
         table = new JTable();
         refreshPatientTable();
         return new JScrollPane(table);
     }
-
+/*
 
     /**
      * Aktualisiert die Patiententabelle mit den aktuellen Daten aus der Datenbank.
@@ -157,7 +212,7 @@ public class HauptGUI extends JFrame {
     public void refreshPatientTable() {
         try {
             java.util.List<Patient> patients = patientenDatenbank.getAllPatients();
-            updatePatientTable((List) patients);
+            updatePatientTable(patients);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Fehler beim Abrufen der Patienten: " + e.getMessage());
         }
@@ -189,7 +244,10 @@ public class HauptGUI extends JFrame {
                 .toArray(Object[][]::new); // Umwandlung des Streams in ein 2D-Array
 
         // Setze das Modell der JTable mit den Daten und Spaltennamen
-        table.setModel(new DefaultTableModel(data, columnNames));
+
+        // Stelle sicher, dass das Modell aktualisiert wird
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setDataVector(data, columnNames);
     }
 }
 

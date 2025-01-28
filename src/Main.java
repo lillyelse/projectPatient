@@ -2,6 +2,8 @@
 import GUI.Login;
 import database.DatenBankAnbindung;
 
+import javax.swing.*;
+
 /**
  * Die Main-Klasse ist der Einstiegspunkt der Anwendung.
  */
@@ -17,7 +19,12 @@ public class Main {
         /**
          * Initialisiert die Login-GUI.
          */
-        new Login();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new Login(); // Create and show the Login frame
+            }
+        });
     }
 
 
