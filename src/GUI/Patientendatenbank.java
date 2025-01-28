@@ -17,15 +17,19 @@ import java.util.List;
             db = DatenBankAnbindung.getInstanz();
             db.coni();
         }
-
         public Patient getPatientById(int id) {
-
+            if (db == null) {
+                System.out.println("Fehler: Die Verbindung zur Datenbank wurde nicht korrekt hergestellt.");
+                return null; // Verlasse die Methode, da keine Verbindung besteht
+            }
             String query = "SELECT * FROM patient WHERE PatientID = ?";
             try (Connection connection = db.coni();
-                 PreparedStatement pstmt = connection.prepareStatement(query))  {
+                 PreparedStatement pstmt = connection.prepareStatement(query)) {
                 pstmt.setInt(1, id);
                 ResultSet rs = pstmt.executeQuery();
+
                 if (rs.next()) {
+                    System.out.println("Patient gefunden: ID " + rs.getInt("PatientID"));  // Ausgabe der gefundenen ID
                     return new Patient(
                             rs.getInt("PatientID"),
                             rs.getString("Vorname"),
@@ -39,14 +43,16 @@ import java.util.List;
                             rs.getString("Krankenkasse"),
                             rs.getInt("AngehoerigerID")
                     );
-                }else {
-                    System.out.println("Kein Person.Patient mit der ID " + id + " gefunden.");
+                } else {
+                    System.out.println("Kein Patient mit der ID " + id + " gefunden."); // Ausgabe falls kein Patient gefunden wurde
                 }
             } catch (SQLException e) {
+                System.out.println("Fehler bei der SQL-Abfrage: " + e.getMessage());  // Fehlerausgabe bei SQL-Problemen
                 e.printStackTrace();
             }
             return null;
         }
+
 
         public List<Patient> getAllPatients() {
             List<Patient> patients = new ArrayList<>();
@@ -119,11 +125,11 @@ import java.util.List;
                  PreparedStatement deleteStmt = connection.prepareStatement(deletePatientQuery)) {
 
                 // Setze die PatientID auf NULL in der Befund-Tabelle
-                updateStmt.setInt(11, patientId);
+                updateStmt.setInt(1, patientId);
                 int befundeUpdated = updateStmt.executeUpdate();
 
                 // Lösche den Patienten aus der Person.Patient-Tabelle
-                deleteStmt.setInt(11, patientId);
+                deleteStmt.setInt(1, patientId);
                 int patientDeleted = deleteStmt.executeUpdate();
 
                 // Wenn sowohl die Befunde geändert als auch der Person.Patient gelöscht wurde, dann true zurückgeben

@@ -265,14 +265,16 @@ public class KontaktFormular extends JPanel {
                             JOptionPane.showMessageDialog(this, "Patient erfolgreich gelöscht!");
                             hauptGUI.refreshPatientTable();
                         } else {
-                            JOptionPane.showMessageDialog(this, "Kein Patient mit dieser ID gefunden!");
+                            JOptionPane.showMessageDialog(this, "Fehler beim Löschen des Patienten. Bitte versuchen Sie es erneut.");
                         }
                     }
                 } else {
                     JOptionPane.showMessageDialog(this, "Kein Patient mit dieser ID gefunden!");
                 }
-            } catch (NumberFormatException | SQLException e) {
+            } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "Ungültige ID eingegeben. Bitte geben Sie eine gültige Zahl ein.");
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Fehler bei der Datenbankabfrage. Bitte versuchen Sie es später erneut.");
             }
         }
     }

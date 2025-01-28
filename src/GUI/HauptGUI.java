@@ -63,12 +63,12 @@ public class HauptGUI extends JFrame {
         // Pulldownmenü
         JMenu patientMenu = new JMenu("Patient");
         // Menüeinträge
-        JMenuItem searchItem = new JMenuItem("Suchen");
+        //JMenuItem searchItem = new JMenuItem("Suchen");
         JMenuItem addItem = new JMenuItem("Hinzufügen");
         JMenuItem editItem = new JMenuItem("Bearbeiten");
         JMenuItem deleteItem = new JMenuItem("Löschen");
         // Menüeinträge zum Pulldownmenü hinzufügen
-        patientMenu.add(searchItem);
+        //patientMenu.add(searchItem);
         patientMenu.add(addItem);
         patientMenu.add(editItem);
         patientMenu.add(deleteItem);
@@ -78,7 +78,7 @@ public class HauptGUI extends JFrame {
         setJMenuBar(menuBar);
 
         // ActionListener für die Menüeinträge
-        searchItem.addActionListener(e -> searchPatientFromMenu.searchPatient());
+        //searchItem.addActionListener(e -> searchPatientFromMenu.searchPatient());
         addItem.addActionListener(e -> addPatientFromMenu.addPatient());
         // die unteren beiden funktionieren noch nicht-noch nicht bearbeitet:
         editItem.addActionListener(e -> new EditPatientFromMenu(patientenDatenbank).execute(this));
