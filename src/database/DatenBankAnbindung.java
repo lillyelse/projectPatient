@@ -17,7 +17,6 @@ public class DatenBankAnbindung {
     private static DatenBankAnbindung instanz;
     private static Connection con;
 
-    // Privater Konstruktor, um Instanziierung außerhalb der Klasse zu verhindern
 
     /**
      * Privater Konstruktor, um eine Instanziierung außerhalb der Klasse zu verhindern.
@@ -33,11 +32,15 @@ public class DatenBankAnbindung {
      */
     public Connection coni() {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver"); // MySQL-Treiber laden
+            /* 1. MySQL-Treiber laden
+            Class.forName() ist eine Möglichkeit dafür: Klassen können so anhand des Klassennamens geladen werden können.*/
+            Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
+            //System.err.println: kennzeichnet die Ausgabe als Fehlermeldung durch (meist) rote Schriftfarbe
             System.err.println("JDBC-Treiber konnte nicht geladen werden: " + e.getMessage());
         }
         try {
+            // 2. Verbindung aufbauen
             con = DriverManager.getConnection(URL, USER, PASSWORD);
             System.out.println("Datenbankverbindung erfolgreich");
         } catch (SQLException e) {
@@ -54,8 +57,11 @@ public class DatenBankAnbindung {
      * @return die Instanz der DatenBankAnbindung
      */
     public static DatenBankAnbindung getInstanz() {
+        // schon vor dem synchronisierten Block prüfen, ob die Instanz null ist, weil Synchronisierung teuer ist. Wenn die Instanz bereits existiert, kann die Methode ohne Synchronisierung ausgeführt werden.
         if (instanz == null) {
+            // syonchronized() nötig, weil ohne Synchronisierung könnten mehrere Threads gleichzeitig feststellen, dass instanz null ist, und mehrere Instanzen der Klasse erstellen. Dies würde das Singleton-Pattern brechen.
             synchronized (DatenBankAnbindung.class) {
+                // wieder prüfen, ob die Instanz immer noch null ist
                 if (instanz == null) {
                     instanz = new DatenBankAnbindung();
                 }
@@ -92,6 +98,7 @@ public class DatenBankAnbindung {
             System.err.println("Fehler bei der Verbindung: " + e.getMessage());
         }
     }
+
 
     /**
      * Diese statische Methode schließt die bestehende Datenbankverbindung, falls eine offene Verbindung besteht.

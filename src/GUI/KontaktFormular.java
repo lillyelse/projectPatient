@@ -31,7 +31,7 @@ public class KontaktFormular extends JPanel {
     private JPanel kontaktFormularPanel;
     private JTextField vornameField, nachnameField, geburtsdatumField, strasseField, plzField, ortField,
             bundeslandField, geschlechtField, krankenkasseField, angehoerigerField;
-    private PatientManager patientManager;
+    //private PatientManager patientManager;  > Klasse doch nicht verwendet
     private Patientendatenbank patientenDatenbank;
     private HauptGUI hauptGUI;
     private DefaultTableModel tableModel;
