@@ -1,3 +1,6 @@
+// Diese Klasse wird nicht verwendet. Wir lassen sie trotzdem mal stehen.
+
+
 package GUI.Patient;
 
 import GUI.Patientendatenbank;

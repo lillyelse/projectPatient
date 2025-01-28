@@ -11,14 +11,13 @@ public class Main {
 
     /**
      * Der Einstiegspunkt der Anwendung.
+     * Ruft die Methode testConnecion() auf und initialisiert die Login-GUI.
      * @param args Die Kommandozeilen-Argumente, die der Anwendung übergeben werden können.
      */
     public static void main(String[] args) {
 
         DatenBankAnbindung.testConnection();
-        /**
-         * Initialisiert die Login-GUI.
-         */
+
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {

@@ -103,11 +103,11 @@ public class HauptGUI extends JFrame {
         setJMenuBar(menuBar);
 
         // ActionListener für die Menüeinträge
-
+        /*
         addItem.addActionListener(e -> addPatientFromMenu.addPatient());
         // die unteren beiden funktionieren noch nicht-noch nicht bearbeitet:
         editItem.addActionListener(e -> new EditPatientFromMenu(patientenDatenbank).execute(this));
-        deleteItem.addActionListener(e -> new DeletePatientFromMenu(patientenDatenbank).execute(this));
+        deleteItem.addActionListener(e -> new DeletePatientFromMenu(patientenDatenbank).execute(this));*/
 
         // ActionListener für Hauptmenü (Patient) funktionieren tun sie ??
         patientMenu.addMenuListener(new javax.swing.event.MenuListener() {

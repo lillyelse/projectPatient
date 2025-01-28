@@ -136,17 +136,23 @@ public class Patient {
 
     @Override
     public String toString() {
-        return "Person.Patient{" +
+        return "Patient{" +
                 "patientid=" + patientid +
                 ", vorname='" + vorname + '\'' +
                 ", nachname='" + nachname + '\'' +
-                ", geburtsdatum='" + geburtsdatum + '\'' +
+                ", geburtsdatum=" + geburtsdatum +
                 ", strasse='" + strasse + '\'' +
                 ", plz='" + plz + '\'' +
                 ", ort='" + ort + '\'' +
                 ", bundesland='" + bundesland + '\'' +
+                ", geschlechtID=" + geschlechtID +
+                ", krankenkasse='" + krankenkasse + '\'' +
+                ", angehoerigerID=" + angehoerigerID +
                 '}';
     }
+
+
+
 
 
 }
