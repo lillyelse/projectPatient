@@ -3,7 +3,7 @@
 
 // FUNKTIONIERT zu 100 %: Log-In
 // FUNKTIONIERT zu 100 %: Suchfunktion mit REG-EX
-// FUNKTIONIERT ZU 90-100 %: Abspeichern als PDF am Desktop
+// FUNKTIONIERT ZU 90-100 %: Export/Druckfunktion/Abspeichern als PDF am Desktop
 
 import GUI.Login;
 import database.DatenBankAnbindung;
