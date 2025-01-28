@@ -27,7 +27,7 @@ public class Login extends JFrame{
     public Login(){
         setTitle("Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(550, 400);
+        setSize(630, 450);
         setLocationRelativeTo(null);
 
         // Hintergrundbild laden und anzeigen!!
@@ -36,7 +36,7 @@ public class Login extends JFrame{
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 ImageIcon backgroundIcon = OptimizedImageLoader.loadImage(
-                        "src/Lib/img.png", getWidth(), getHeight()
+                        "src/Lib/img_1.png", getWidth(), getHeight()
                 );
                 if (backgroundIcon != null) {
                     g.drawImage(backgroundIcon.getImage(), 0, 0, getWidth(), getHeight(), this);
@@ -49,7 +49,7 @@ public class Login extends JFrame{
         setContentPane(backgroundPanel);
 
         // Panel für Login-Formular
-        JPanel panel = new JPanel(new GridLayout(3, 2, 80, 80));
+        JPanel panel = new JPanel(new GridLayout(3, 2, 100, 100));
         panel.setOpaque(false);
 
         // Komponenten hinzufügen

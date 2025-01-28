@@ -3,6 +3,7 @@ package GUI;
 import models.Patient;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -16,7 +17,7 @@ import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
-import javax.swing.table.DefaultTableModel;
+
 
 /**
  * Die Klasse KontaktFormular stellt eine Benutzeroberfläche bereit,
@@ -34,6 +35,8 @@ public class KontaktFormular extends JPanel {
     private Patientendatenbank patientenDatenbank;
     private HauptGUI hauptGUI;
     private DefaultTableModel tableModel;
+
+
     /**
      * Konstruktor für die Klasse KontaktFormular
      * Dieser Konstruktor initialisiert das Kontaktformular mit verschiedenen Eingabefeldern
@@ -64,6 +67,12 @@ public class KontaktFormular extends JPanel {
         krankenkasseField = new JTextField();
         angehoerigerField = new JTextField();
 
+        // Tabelle
+        tableModel = new DefaultTableModel(new String[]{
+                "PatientID", "Vorname", "Nachname", "Geburtsdatum", "Strasse",
+                "PLZ", "Ort", "Bundesland", "GeschlechtID", "Krankenkasse", "AngehörigerID"}, 0);
+
+
         // mit formPanel.add Labels und Felder zum Formular hinzugefügt
         formPanel.add(new JLabel("Vorname:"));
         formPanel.add(vornameField);
@@ -85,6 +94,7 @@ public class KontaktFormular extends JPanel {
         formPanel.add(krankenkasseField);
         formPanel.add(new JLabel("Angehörige ID:"));
         formPanel.add(angehoerigerField);
+
 
         // Kontaktformular Layout zum Panel hinzugefügt
         kontaktFormularPanel.add(formPanel, BorderLayout.CENTER);
@@ -175,6 +185,7 @@ public class KontaktFormular extends JPanel {
         this.setLayout(new BorderLayout());
         this.add(kontaktFormularPanel, BorderLayout.CENTER);
 
+
     }
     private void exportToPDF() {
         JFileChooser fileChooser = new JFileChooser();
@@ -218,16 +229,6 @@ public class KontaktFormular extends JPanel {
                         Object cellValue = tableModel.getValueAt(i, j);
                         String cellText = (cellValue != null) ? cellValue.toString() : "-";
 
-                         /*   if (j == 4) { // Spalte Geburtstag
-                                cellText = formatDate(cellText); // Nur Datum formatieren
-                            }
-
-                            table.addCell(new Cell()
-                                    .add(new Paragraph(cellText))
-                                    .setTextAlignment(TextAlignment.LEFT)
-                                    .setPadding(5));
-                          */
-
                     }
                 }
 
@@ -244,6 +245,7 @@ public class KontaktFormular extends JPanel {
             }
         }
     }
+
 
     /**
      * Die Methode löscht einen Patienten aus der Datenbank.
@@ -283,7 +285,6 @@ public class KontaktFormular extends JPanel {
             }
         }
     }
-
 
 
     /**
