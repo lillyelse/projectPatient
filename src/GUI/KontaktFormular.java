@@ -34,7 +34,6 @@ public class KontaktFormular extends JPanel {
     private Patientendatenbank patientenDatenbank;
     private HauptGUI hauptGUI;
     private DefaultTableModel tableModel;
-
     /**
      * Konstruktor für die Klasse KontaktFormular
      * Dieser Konstruktor initialisiert das Kontaktformular mit verschiedenen Eingabefeldern
@@ -145,6 +144,12 @@ public class KontaktFormular extends JPanel {
                         PatientEditDialog dialog = new PatientEditDialog();
                         dialog.setPatient(patient, patientenDatenbank, hauptGUI);
                         dialog.setVisible(true);
+                        // Null-Überprüfung, bevor refreshPatientTable aufgerufen wird
+                        if (hauptGUI != null) {
+                            hauptGUI.refreshPatientTable();
+                        } else {
+                            System.out.println("Fehler: hauptGUI ist null");
+                        }
                     } else {
                         JOptionPane.showMessageDialog(this, "Kein Patient mit dieser ID gefunden!");
                     }
